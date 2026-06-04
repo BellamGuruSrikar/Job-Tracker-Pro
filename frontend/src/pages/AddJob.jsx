@@ -93,6 +93,19 @@ function AddJob() {
 
         <br /><br />
 
+        <select
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+        >
+          <option value="Applied">Applied</option>
+          <option value="Interview">Interview</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Offer">Offer</option>
+        </select>
+
+        <br /><br />
+        
         <button type="submit">
           Save Job
         </button>
