@@ -9,7 +9,15 @@ function Jobs(){
 
     useEffect(() => {
         axios
-        .get("http://127.0.0.1:8000/api/jobs/")
+        .get("http://127.0.0.1:8000/api/jobs/",
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "access_token"
+                    )}`,
+                },
+            }
+        )
         .then((response) => {
             setJobs(response.data);
         })
@@ -21,7 +29,14 @@ function Jobs(){
     const deleteJob = async (id) => {
         try {
             await axios.delete(
-            `http://127.0.0.1:8000/api/jobs/${id}/`
+                `http://127.0.0.1:8000/api/jobs/${id}/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
+                }
             );
 
             setJobs(
@@ -39,6 +54,13 @@ function Jobs(){
                 `http://127.0.0.1:8000/api/jobs/${id}/`,
                 {
                     status: newStatus
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "access_token"
+                        )}`,
+                    },
                 }
             );
             setJobs(

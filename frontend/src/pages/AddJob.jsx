@@ -26,7 +26,13 @@ function AddJob() {
     try {
       await axios.post(
         "http://127.0.0.1:8000/api/jobs/",
-        formData
+        formData,{
+          headers:{
+            Authorization: `Bearer ${localStorage.getItem(
+              "access_token"
+            )}`,
+          },
+        }
       );
 
       alert("Job Added Successfully");

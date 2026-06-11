@@ -7,8 +7,15 @@ function Dashboard() {
     const [jobs, setJobs] = useState([]);
 
     useEffect(() => {
-        axios
-        .get("http://127.0.0.1:8000/api/jobs/")
+        axios.get(
+            "http://127.0.0.1:8000/api/jobs/",
+        {
+            headers :{
+                Authorization: `Bearer ${localStorage.getItem(
+                    "access_token"
+                )}`,
+            },
+        })
         .then((response) => {
             setJobs(response.data);
         })
