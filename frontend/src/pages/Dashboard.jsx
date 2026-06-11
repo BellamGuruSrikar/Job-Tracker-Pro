@@ -77,6 +77,14 @@ function Dashboard() {
                     <h2>{offers}</h2>
                 </div>
             </div>
+            <h2>Recent Applicatios</h2>
+            <ul>
+                {jobs.slice(0,5).map((job)=>(
+                    <li key={job.id}>
+                        {job.company_name}-{job.status}
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
