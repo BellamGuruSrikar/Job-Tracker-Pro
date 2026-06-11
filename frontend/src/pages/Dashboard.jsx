@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import StatusChart from "../components/StatusChart";
+import MonthlyChart from "../components/MonthlyChart";
 
 function Dashboard() {
     const [jobs, setJobs] = useState([]);
@@ -89,6 +90,9 @@ function Dashboard() {
 
             <h2>Applications By Status</h2>
             <StatusChart jobs={jobs} />
+
+            <h2>Applications Per Month</h2>
+            <MonthlyChart jobs={jobs}/>
         </div>
     );
 }
