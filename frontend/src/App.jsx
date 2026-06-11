@@ -12,6 +12,7 @@ import Jobs from "./pages/Jobs";
 import AddJob from "./pages/AddJob";
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -19,10 +20,16 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/jobs" element={<Jobs />} />
-        <Route path="/add-job" element={<AddJob />} />
-        <Route path="/Login" element={<Login/>} />
+        <Route path="/" element={<ProtectedRoute>
+                                  <Dashboard />
+                                </ProtectedRoute>} />
+        <Route path="/jobs" element={<ProtectedRoute>
+                                        <Jobs />
+                                      </ProtectedRoute>} />
+        <Route path="/add-job" element={<ProtectedRoute>
+                                          <AddJob />
+                                        </ProtectedRoute>} />
+        <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
       </Routes>
     </BrowserRouter>

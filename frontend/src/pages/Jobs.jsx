@@ -112,6 +112,7 @@ function Jobs(){
                     <th>Company</th>
                     <th>Role</th>
                     <th>Location</th>
+                    <th>Resume</th>
                     <th>Status</th>
                     <th>Actions</th>
                     </tr>
@@ -123,6 +124,7 @@ function Jobs(){
                         <td>{job.company_name}</td>
                         <td>{job.job_title}</td>
                         <td>{job.location}</td>
+                        <td>{job.resume_version}</td>
                         <td>
                             <select value={job.status} 
                             onChange={(e)=> updateStatus(job.id,e.target.value)}>

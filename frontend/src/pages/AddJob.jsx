@@ -10,7 +10,9 @@ function AddJob() {
     date_applied: "",
     status: "Applied",
     notes: "",
-    user: 2
+    resume_version: "",
+    interview_date: "",
+    interview_notes: ""
   });
 
   const handleChange = (e) => {
@@ -54,6 +56,7 @@ function AddJob() {
     }
   };
 
+  
   return (
     <div>
       <h1>Add Job</h1>
@@ -99,6 +102,16 @@ function AddJob() {
 
         <br /><br />
 
+        <input
+          type="text"
+          name="resume_version"
+          placeholder="Resume Version"
+          value={formData.resume_version}
+          onChange={handleChange}
+        />
+
+        <br /><br />
+
         <select
           name="status"
           value={formData.status}
@@ -111,7 +124,22 @@ function AddJob() {
         </select>
 
         <br /><br />
-        
+
+        <input
+          type="date"
+          name="interview_date"
+          value={formData.interview_date}
+          onChange={handleChange}
+        />
+
+        <textarea
+          name="interview_notes"
+          placeholder="Interview Notes"
+          value={formData.interview_notes}
+          onChange={handleChange}
+        />
+        <br /><br />
+
         <button type="submit">
           Save Job
         </button>

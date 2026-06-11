@@ -1,10 +1,17 @@
 import { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  if (localStorage.getItem("access_token")) {
+    return <Navigate to="/" />;
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -20,6 +27,7 @@ function Register() {
       );
 
       alert("Registration Successful!");
+      navigate("/login");
     } catch (error) {
       console.log(error);
       alert("Registration Failed");
