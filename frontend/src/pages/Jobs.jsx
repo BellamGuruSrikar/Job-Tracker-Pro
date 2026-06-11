@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Jobs(){
+   
     const [jobs, setJobs] = useState([]);
+    const [searchTerm, setSearchTerm]= useState("");
+    const [statusFilter, setSearchFilter]= useState("All");
 
     useEffect(() => {
         axios
@@ -49,10 +52,38 @@ function Jobs(){
             console.log(error);
         }
     };
+    const filteredJobs = jobs.filter((job)=>{
+        const matchesSearch=
+          job.company_name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+
+        const matchesStatus=
+            statusFilter=== "All" ||
+            job.status=== statusFilter;
+        
+        return matchesSearch && matchesStatus;
+    });
     return (
         <div>
             <h1>My Applications</h1>
+            
+            <input type="text"
+            placeholder="Search Company..."
+            value={searchTerm}
+            onChange={(e)=> setSearchTerm(e.target.value)}
+            />
 
+            <select value={statusFilter}
+            onChange={(e)=> setSearchFilter(e.target.value)}>
+                <option value="All">All</option>
+                <option value="Applied">Applied</option>
+                <option value="Interview">Interview</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Offer">Offer</option>
+            </select>
+
+            <br/> <br />
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
@@ -65,7 +96,7 @@ function Jobs(){
                 </thead>
 
                 <tbody>
-                    {jobs.map((job) => (
+                    {filteredJobs.map((job) => (
                     <tr key={job.id}>
                         <td>{job.company_name}</td>
                         <td>{job.job_title}</td>

@@ -28,13 +28,55 @@ function Dashboard() {
     ).length;
 
     return (
-        <div>
+        <div style={{ padding: "20px"}}>
             <h1>Dashboard</h1>
 
-            <h2>Total Applications: {totalJobs}</h2>
-            <h2>Interviews: {interviews}</h2>
-            <h2>Rejected: {rejected}</h2>
-            <h2>Offers: {offers}</h2>
+            <div style={{
+                display: "flex",
+                gap: "20px",
+                flexWrap: "wrap",
+                marginTop: "20px",
+            }}>
+                <div style={{
+                    border: "1px solid #ccc",
+                    padding: "20px",
+                    width: "200px",
+                    borderRadius: "10px",
+                }}>
+                    <h3>Total Applications:</h3>
+                    <h2>{totalJobs}</h2>
+                </div>
+
+                <div style={{
+                    border: "1px solid #ccc",
+                    padding: "20px",
+                    width: "200px",
+                    borderRadius: "10px",
+                }}>
+                    <h3>Interviews:</h3>
+                    <h2>{interviews}</h2>
+                </div>
+                
+                <div style={{
+                    border: "1px solid #ccc",
+                    padding: "20px",
+                    width: "200px",
+                    borderRadius: "10px",
+                }}>
+                    <h3>Rejected:</h3>
+                    <h2>{rejected}</h2>
+                </div>
+
+                <div style={{
+                    border: "1px solid #ccc",
+                    padding: "20px",
+                    width: "200px",
+                    borderRadius: "10px",
+                }}>
+                    <h3>Offers:</h3>
+                    <h2>{offers}</h2>
+                </div>
+            </div>
         </div>
     );
 }
