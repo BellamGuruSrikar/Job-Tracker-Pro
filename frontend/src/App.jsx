@@ -10,7 +10,8 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Jobs from "./pages/Jobs";
 import AddJob from "./pages/AddJob";
-import Login from './pages/Login'
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/add-job" element={<AddJob />} />
         <Route path="/Login" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
       </Routes>
     </BrowserRouter>
   );
