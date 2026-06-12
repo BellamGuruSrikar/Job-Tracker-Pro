@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CSVLink } from "react-csv"; 
 import axios from "axios";
 
 function Jobs(){
@@ -86,6 +87,16 @@ function Jobs(){
         
         return matchesSearch && matchesStatus;
     });
+
+    const csvData = jobs.map((job) => ({
+        Company: job.company_name,
+        JobTitle: job.job_title,
+        Status: job.status,
+        Location: job.location,
+        ResumeVersion: job.resume_version,
+        InterviewDate: job.interview_date,
+    }));
+
     return (
         <div>
             <h1>My Applications</h1>
@@ -106,6 +117,13 @@ function Jobs(){
             </select>
 
             <br/> <br />
+            <CSVLink
+                data={csvData}
+                filename={"job_applications.csv"}
+            >
+                <button>Export CSV</button>
+            </CSVLink>
+
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
@@ -136,6 +154,19 @@ function Jobs(){
                         </td>
                         <td>{job.resume_version}</td>
                         <td>{job.interview_data}</td>
+                        <td>
+                            {job.resume_file ? (
+                                <a
+                                href={`http://127.0.0.1:8000${job.resume_file}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                >
+                                View Resume
+                                </a>
+                            ) : (
+                                "No File"
+                            )}
+                        </td>
                         <td><button onClick={()=>deleteJob(job.id)}>
                                 Delete
                             </button>

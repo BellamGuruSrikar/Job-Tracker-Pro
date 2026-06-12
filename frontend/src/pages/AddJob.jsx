@@ -25,14 +25,26 @@ function AddJob() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const data = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      data.append(key, formData[key]);
+    });
+
+    if (resumeFile) {
+      data.append("resume_file", resumeFile);
+    }
+
     try {
       await axios.post(
         "http://127.0.0.1:8000/api/jobs/",
-        formData,{
-          headers:{
+        data,
+        {
+          headers: {
             Authorization: `Bearer ${localStorage.getItem(
               "access_token"
             )}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -55,6 +67,7 @@ function AddJob() {
       alert("Error Adding Job");
     }
   };
+  const [resumeFile, setResumeFile] = useState(null);
 
   
   return (
@@ -110,6 +123,14 @@ function AddJob() {
           onChange={handleChange}
         />
 
+        <br /><br />
+        <input
+          type="file"
+          accept=".pdf"
+          onChange={(e) =>
+            setResumeFile(e.target.files[0])
+          }
+        />
         <br /><br />
 
         <select

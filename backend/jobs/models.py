@@ -16,6 +16,11 @@ class JobApplication(models.Model):
         max_length=100,
         blank=True
     )
+    resume_file = models.FileField(
+        upload_to="resumes/",
+        blank=True,
+        null=True
+    )
     interview_date = models.DateField(null=True, blank=True)
     interview_notes = models.TextField(blank=True)
     location = models.CharField(max_length=200, blank=True)
