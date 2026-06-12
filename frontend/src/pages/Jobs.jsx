@@ -109,12 +109,13 @@ function Jobs(){
             <table border="1" cellPadding="10">
                 <thead>
                     <tr>
-                    <th>Company</th>
-                    <th>Role</th>
-                    <th>Location</th>
-                    <th>Resume</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th>Location</th>
+                        <th>Resume</th>
+                        <th>Interview Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
 
@@ -124,7 +125,6 @@ function Jobs(){
                         <td>{job.company_name}</td>
                         <td>{job.job_title}</td>
                         <td>{job.location}</td>
-                        <td>{job.resume_version}</td>
                         <td>
                             <select value={job.status} 
                             onChange={(e)=> updateStatus(job.id,e.target.value)}>
@@ -134,6 +134,8 @@ function Jobs(){
                                 <option value="Offer">Offer</option>
                             </select>
                         </td>
+                        <td>{job.resume_version}</td>
+                        <td>{job.interview_data}</td>
                         <td><button onClick={()=>deleteJob(job.id)}>
                                 Delete
                             </button>

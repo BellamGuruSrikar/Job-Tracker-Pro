@@ -24,6 +24,10 @@ function Dashboard() {
 
     const totalJobs = jobs.length;
 
+    const appliedJobs = jobs.filter(
+        (job) => job.status === "Applied"
+    ).length;
+
     const interviews = jobs.filter(
         (job) => job.status === "Interview"
     ).length;
@@ -34,6 +38,12 @@ function Dashboard() {
 
     const offers = jobs.filter(
         (job) => job.status === "Offer"
+    ).length;
+
+    const upcomingInterviews = jobs.filter(
+        (job) =>
+            job.interview_date &&
+            new Date(job.interview_date) >= new Date()
     ).length;
 
     return (
@@ -62,8 +72,28 @@ function Dashboard() {
                     width: "200px",
                     borderRadius: "10px",
                 }}>
+                    <h3>Applied:</h3>
+                    <h2>{appliedJobs}</h2>
+                </div>
+
+                <div style={{
+                    border: "1px solid #ccc",
+                    padding: "20px",
+                    width: "200px",
+                    borderRadius: "10px",
+                }}>
                     <h3>Interviews:</h3>
                     <h2>{interviews}</h2>
+                </div>
+
+                <div style={{
+                    border: "1px solid #ccc",
+                    padding: "20px",
+                    width: "200px",
+                    borderRadius: "10px",
+                }}>
+                    <h3>Upcoming Interviews:</h3>
+                    <h2>{upcomingInterviews}</h2>
                 </div>
                 
                 <div style={{
@@ -86,11 +116,11 @@ function Dashboard() {
                     <h2>{offers}</h2>
                 </div>
             </div>
-            <h2>Recent Applicatios</h2>
+            <h2>Recent Applications</h2>
             <ul>
                 {jobs.slice(0,5).map((job)=>(
                     <li key={job.id}>
-                        {job.company_name}-{job.status}
+                        {job.company_name}-{job.job_title}-{job.status}
                     </li>
                 ))}
             </ul>
