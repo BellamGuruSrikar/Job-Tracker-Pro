@@ -7,6 +7,7 @@ function Jobs(){
     const [jobs, setJobs] = useState([]);
     const [searchTerm, setSearchTerm]= useState("");
     const [statusFilter, setSearchFilter]= useState("All");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios
@@ -21,13 +22,31 @@ function Jobs(){
         )
         .then((response) => {
             setJobs(response.data);
+            setLoading(false);
         })
         .catch((error) => {
+            if(error.response?.status===401){
+
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
+
+                window.location.href="/login";
+            }
+
             console.log(error);
-        });
+
+            setLoading(false);
+            });
     }, []);
 
     const deleteJob = async (id) => {
+        const confirmDelete = window.confirm(
+            "Are you sure you want to delete this application?"
+        );
+
+        if(!confirmDelete){
+            return;
+        }
         try {
             await axios.delete(
                 `http://127.0.0.1:8000/api/jobs/${id}/`,
@@ -96,6 +115,9 @@ function Jobs(){
         ResumeVersion: job.resume_version,
         InterviewDate: job.interview_date,
     }));
+    if(loading){
+        return <h2>Loading Jobs...</h2>;
+    }
 
     return (
         <div>
@@ -133,46 +155,64 @@ function Jobs(){
                         <th>Resume</th>
                         <th>Interview Date</th>
                         <th>Status</th>
+                        <th>Resume File</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {filteredJobs.map((job) => (
-                    <tr key={job.id}>
-                        <td>{job.company_name}</td>
-                        <td>{job.job_title}</td>
-                        <td>{job.location}</td>
-                        <td>
-                            <select value={job.status} 
-                            onChange={(e)=> updateStatus(job.id,e.target.value)}>
-                                <option value="Applied">Applied</option>
-                                <option value="Interview">Interview</option>
-                                <option value="Rejected">Rejected</option>
-                                <option value="Offer">Offer</option>
-                            </select>
-                        </td>
-                        <td>{job.resume_version}</td>
-                        <td>{job.interview_data}</td>
-                        <td>
-                            {job.resume_file ? (
-                                <a
-                                href={`http://127.0.0.1:8000${job.resume_file}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                >
-                                View Resume
-                                </a>
-                            ) : (
-                                "No File"
-                            )}
-                        </td>
-                        <td><button onClick={()=>deleteJob(job.id)}>
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                    ))}
+                    {filteredJobs.length === 0 ? (
+                        <tr>
+                            <td
+                                colSpan="8"
+                                style={{
+                                    textAlign: "center",
+                                    padding: "20px",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                No job applications found.
+                                <br />
+                                Click "Add Job" to create your first application.
+                            </td>
+                        </tr>
+                    ) : (filteredJobs.map((job) => (
+                            <tr key={job.id}>
+                                <td>{job.company_name}</td>
+                                <td>{job.job_title}</td>
+                                <td>{job.location}</td>
+                                <td>{job.resume_version}</td>
+                                <td>{job.interview_date}</td>
+                                <td>
+                                    <select value={job.status} 
+                                    onChange={(e)=> updateStatus(job.id,e.target.value)}>
+                                        <option value="Applied">Applied</option>
+                                        <option value="Interview">Interview</option>
+                                        <option value="Rejected">Rejected</option>
+                                        <option value="Offer">Offer</option>
+                                    </select>
+                                </td>
+                                
+                                <td>
+                                    {job.resume_file ? (
+                                        <a
+                                        href={`http://127.0.0.1:8000${job.resume_file}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        >
+                                        View Resume
+                                        </a>
+                                    ) : (
+                                        "No File"
+                                    )}
+                                </td>
+                                <td><button onClick={()=>deleteJob(job.id)}>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            ))
+                        )}
                 </tbody>
             </table>
         </div>

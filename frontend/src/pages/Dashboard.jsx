@@ -5,6 +5,7 @@ import MonthlyChart from "../components/MonthlyChart";
 
 function Dashboard() {
     const [jobs, setJobs] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios.get(
@@ -18,8 +19,11 @@ function Dashboard() {
         })
         .then((response) => {
             setJobs(response.data);
+            setLoading(false);
         })
-        .catch((error) => console.log(error));
+        .catch((error) =>{ console.log(error);
+                setLoading(false);
+            });
     }, []);
 
     const totalJobs = jobs.length;
@@ -45,7 +49,9 @@ function Dashboard() {
             job.interview_date &&
             new Date(job.interview_date) >= new Date()
     ).length;
-
+    if(loading){
+        return <h2>Loading Dashboard...</h2>;
+    }
     return (
         <div style={{ padding: "20px"}}>
             <h1>Dashboard</h1>

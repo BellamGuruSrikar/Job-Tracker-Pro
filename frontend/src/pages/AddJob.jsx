@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 function AddJob() {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     company_name: "",
     job_title: "",
@@ -24,6 +25,8 @@ function AddJob() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    setLoading(true);
 
     const data = new FormData();
 
@@ -50,6 +53,7 @@ function AddJob() {
       );
 
       alert("Job Added Successfully");
+      setLoading(false);
 
       setFormData({
         company_name: "",
@@ -63,8 +67,17 @@ function AddJob() {
       });
 
     } catch (error) {
-      console.error(error);
-      alert("Error Adding Job");
+      console.log(error);
+      setLoading(false);
+      if (error.response?.status === 401) {
+          alert("Session expired. Please login again.");
+      }
+      else if (error.response?.status === 400) {
+          alert("Please fill all required fields.");
+      }
+      else {
+          alert("Something went wrong.");
+      }
     }
   };
   const [resumeFile, setResumeFile] = useState(null);
@@ -161,8 +174,8 @@ function AddJob() {
         />
         <br /><br />
 
-        <button type="submit">
-          Save Job
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save Job"}
         </button>
 
       </form>

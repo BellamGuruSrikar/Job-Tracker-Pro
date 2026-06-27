@@ -3,12 +3,21 @@ import { Link } from "react-router-dom";
 function Navbar(){
     const token = localStorage.getItem("access_token");
 
-    const handleLogout = () => {
+    const handleLogout = ()=>{
+
+        const confirmLogout = window.confirm(
+            "Do you really want to logout?"
+        );
+
+        if(!confirmLogout){
+            return;
+        }
+
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
 
-        window.location.href = "/login";
-    };
+        window.location.href="/login";
+    }
     return(
         <nav>
             {/* <Link to="/">Dashboard</Link> |{" "}
