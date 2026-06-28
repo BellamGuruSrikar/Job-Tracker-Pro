@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
+import "../styles/auth.css";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
 
   if (localStorage.getItem("access_token")) {
     return <Navigate to="/" />;
@@ -43,36 +42,41 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="auth-page">
+      <div className="auth-card">
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) =>
-            setUsername(e.target.value)
-          }
-        />
+        <h1>Job Tracker Pro</h1>
 
-        <br /><br />
+        <form className="auth-form" onSubmit={handleLogin}>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-        />
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <br /><br />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button type="submit">
-          Login
-        </button>
-      </form>
+          <button type="submit">
+            Login
+          </button>
+
+        </form>
+
+        <div className="auth-footer">
+          Don't have an account?{" "}
+          <Link to="/register">
+            Register
+          </Link>
+        </div>
+
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CSVLink } from "react-csv"; 
 import axios from "axios";
+import "../styles/jobs.css";
 
 function Jobs(){
    
@@ -120,33 +121,43 @@ function Jobs(){
     }
 
     return (
-        <div>
-            <h1>My Applications</h1>
-            
-            <input type="text"
-            placeholder="Search Company..."
-            value={searchTerm}
-            onChange={(e)=> setSearchTerm(e.target.value)}
-            />
+        <div className="jobs-page">
+            <div className="jobs-header">
+                <h1>My Applications</h1>
 
-            <select value={statusFilter}
-            onChange={(e)=> setSearchFilter(e.target.value)}>
-                <option value="All">All</option>
-                <option value="Applied">Applied</option>
-                <option value="Interview">Interview</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Offer">Offer</option>
-            </select>
+                <CSVLink
+                    data={csvData}
+                    filename={"job_applications.csv"}
+                >
+                    <button className="export-btn">
+                        Export CSV
+                    </button>
+                </CSVLink>
+            </div>
 
-            <br/> <br />
-            <CSVLink
-                data={csvData}
-                filename={"job_applications.csv"}
-            >
-                <button>Export CSV</button>
-            </CSVLink>
+            <div className="top-controls">
 
-            <table border="1" cellPadding="10">
+                <input
+                    type="text"
+                    placeholder="Search Company..."
+                    value={searchTerm}
+                    onChange={(e)=>setSearchTerm(e.target.value)}
+                />
+
+                <select
+                    value={statusFilter}
+                    onChange={(e)=>setSearchFilter(e.target.value)}
+                >
+                    <option value="All">All</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Offer">Offer</option>
+                </select>
+
+            </div>
+
+            <table className="jobs-table">
                 <thead>
                     <tr>
                         <th>Company</th>
@@ -195,7 +206,7 @@ function Jobs(){
                                 
                                 <td>
                                     {job.resume_file ? (
-                                        <a
+                                        <a className="resume-link"
                                         href={`http://127.0.0.1:8000${job.resume_file}`}
                                         target="_blank"
                                         rel="noreferrer"
@@ -206,7 +217,8 @@ function Jobs(){
                                         "No File"
                                     )}
                                 </td>
-                                <td><button onClick={()=>deleteJob(job.id)}>
+                                <td><button className="delete-btn"
+                                        onClick={()=>deleteJob(job.id)}>
                                         Delete
                                     </button>
                                 </td>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import "../styles/addjob.css";
 
 function AddJob() {
   const [loading, setLoading] = useState(false);
@@ -63,8 +64,11 @@ function AddJob() {
         date_applied: "",
         status: "Applied",
         notes: "",
-        user: 2
+        resume_version: "",
+        interview_date: "",
+        interview_notes: ""
       });
+      setResumeFile(null);
 
     } catch (error) {
       console.log(error);
@@ -84,101 +88,122 @@ function AddJob() {
 
   
   return (
-    <div>
-      <h1>Add Job</h1>
+    <div className="add-job-page">
+      <div className="job-form">
+        <h1>Add New Job</h1>
 
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Company Name</label>
 
-        <input
-          type="text"
-          name="company_name"
-          placeholder="Company Name"
-          value={formData.company_name}
-          onChange={handleChange}
-        />
+            <input
+              type="text"
+              name="company_name"
+              placeholder="Company Name"
+              value={formData.company_name}
+              onChange={handleChange}
+            />
+        </div>
+        <div className="form-group">
+            <label>Job Title</label>
 
-        <br /><br />
+            <input
+              type="text"
+              name="job_title"
+              placeholder="Job Title"
+              value={formData.job_title}
+              onChange={handleChange}
+            />
+        </div>
+        <div className="form-group">
+            <label>Location</label>
 
-        <input
-          type="text"
-          name="job_title"
-          placeholder="Job Title"
-          value={formData.job_title}
-          onChange={handleChange}
-        />
+            <input
+              type="text"
+              name="location"
+              placeholder="Location"
+              value={formData.location}
+              onChange={handleChange}
+            />
+        </div>
+        <div className="form-group">
+            <label>Date Applied</label>
 
-        <br /><br />
+            <input
+              type="date"
+              name="date_applied"
+              value={formData.date_applied}
+              onChange={handleChange}
+            />
+        </div>
+        <div className="form-group">
+            <label>Resume Version</label>
 
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={formData.location}
-          onChange={handleChange}
-        />
+            <input
+              type="text"
+              name="resume_version"
+              placeholder="Resume Version"
+              value={formData.resume_version}
+              onChange={handleChange}
+            />
+        </div>
+        <div className="form-group">
+            <label>Upload Resume</label>
 
-        <br /><br />
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) =>
+                setResumeFile(e.target.files[0])
+              }
+            />
+        </div>
+          
+          <div className="form-group">
+            <label>Status</label>
 
-        <input
-          type="date"
-          name="date_applied"
-          value={formData.date_applied}
-          onChange={handleChange}
-        />
+            <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+            >
+                <option value="Applied">Applied</option>
+                <option value="Interview">Interview</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Offer">Offer</option>
+            </select>
+          </div>
 
-        <br /><br />
+          <div className="form-group">
+            <label>Interview Date</label>
 
-        <input
-          type="text"
-          name="resume_version"
-          placeholder="Resume Version"
-          value={formData.resume_version}
-          onChange={handleChange}
-        />
+            <input
+                type="date"
+                name="interview_date"
+                value={formData.interview_date}
+                onChange={handleChange}
+            />
+          </div>
 
-        <br /><br />
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={(e) =>
-            setResumeFile(e.target.files[0])
-          }
-        />
-        <br /><br />
+          <div className="form-group">
+            <label>Interview Notes</label>
 
-        <select
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-        >
-          <option value="Applied">Applied</option>
-          <option value="Interview">Interview</option>
-          <option value="Rejected">Rejected</option>
-          <option value="Offer">Offer</option>
-        </select>
+            <textarea
+                name="interview_notes"
+                placeholder="Interview Notes"
+                value={formData.interview_notes}
+                onChange={handleChange}
+            />
+          </div>
 
-        <br /><br />
+          <button type="submit"
+            className="save-btn"
+             disabled={loading}>
+            {loading ? "Saving..." : "Save Job"}
+          </button>
 
-        <input
-          type="date"
-          name="interview_date"
-          value={formData.interview_date}
-          onChange={handleChange}
-        />
-
-        <textarea
-          name="interview_notes"
-          placeholder="Interview Notes"
-          value={formData.interview_notes}
-          onChange={handleChange}
-        />
-        <br /><br />
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Save Job"}
-        </button>
-
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

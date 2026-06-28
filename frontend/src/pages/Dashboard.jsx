@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "../styles/dashboard.css";
 import axios from "axios";
 import StatusChart from "../components/StatusChart";
 import MonthlyChart from "../components/MonthlyChart";
@@ -53,77 +54,42 @@ function Dashboard() {
         return <h2>Loading Dashboard...</h2>;
     }
     return (
-        <div style={{ padding: "20px"}}>
-            <h1>Dashboard</h1>
+        <div className="dashboard">
+            <h1 className="dashboard-title">Dashboard</h1>
 
-            <div style={{
-                display: "flex",
-                gap: "20px",
-                flexWrap: "wrap",
-                marginTop: "20px",
-            }}>
-                <div style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    width: "200px",
-                    borderRadius: "10px",
-                }}>
+            <div className="stats-grid">
+                <div className="stat-card">
                     <h3>Total Applications:</h3>
                     <h2>{totalJobs}</h2>
                 </div>
 
-                <div style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    width: "200px",
-                    borderRadius: "10px",
-                }}>
+                <div className="stat-card">
                     <h3>Applied:</h3>
                     <h2>{appliedJobs}</h2>
                 </div>
 
-                <div style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    width: "200px",
-                    borderRadius: "10px",
-                }}>
+                <div className="stat-card">
                     <h3>Interviews:</h3>
                     <h2>{interviews}</h2>
                 </div>
 
-                <div style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    width: "200px",
-                    borderRadius: "10px",
-                }}>
+                <div className="stat-card">
                     <h3>Upcoming Interviews:</h3>
                     <h2>{upcomingInterviews}</h2>
                 </div>
                 
-                <div style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    width: "200px",
-                    borderRadius: "10px",
-                }}>
+                <div className="stat-card">
                     <h3>Rejected:</h3>
                     <h2>{rejected}</h2>
                 </div>
 
-                <div style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    width: "200px",
-                    borderRadius: "10px",
-                }}>
+                <div className="stat-card">
                     <h3>Offers:</h3>
                     <h2>{offers}</h2>
                 </div>
             </div>
-            <h2>Recent Applications</h2>
-            <ul>
+            <h2 className="section-title">Recent Applications</h2>
+            <ul className="recent-list">
                 {jobs.slice(0,5).map((job)=>(
                     <li key={job.id}>
                         {job.company_name}-{job.job_title}-{job.status}
@@ -131,10 +97,10 @@ function Dashboard() {
                 ))}
             </ul>
 
-            <h2>Applications By Status</h2>
+            <h2 className="section-title">Applications By Status</h2>
             <StatusChart jobs={jobs} />
 
-            <h2>Applications Per Month</h2>
+            <h2 className="section-title">Applications Per Month</h2>
             <MonthlyChart jobs={jobs}/>
         </div>
     );

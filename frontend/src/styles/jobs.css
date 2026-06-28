@@ -1,0 +1,75 @@
+.jobs-page{
+    padding:30px;
+}
+
+.jobs-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.jobs-header h1{
+    font-size:32px;
+}
+
+.top-controls{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.top-controls input,
+.top-controls select{
+    padding:10px 14px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    font-size:15px;
+}
+
+.export-btn{
+    background:var(--primary);
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:var(--radius);
+    cursor:pointer;
+}
+
+.jobs-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:var(--shadow);
+    border-radius:var(--radius);
+    overflow:hidden;
+}
+
+.jobs-table th{
+    background:var(--primary);
+    color:white;
+    padding:15px;
+}
+
+.jobs-table td{
+    padding:14px;
+    border-bottom:1px solid var(--border);
+}
+
+.jobs-table tr:hover{
+    background:#f8fafc;
+}
+
+.delete-btn{
+    background:var(--danger);
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+}
+
+.resume-link{
+    color:var(--primary);
+    font-weight:bold;
+}
