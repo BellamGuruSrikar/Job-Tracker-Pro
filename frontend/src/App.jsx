@@ -13,6 +13,7 @@ import AddJob from "./pages/AddJob";
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
+import EditJob from './pages/EditJob';
 
 function App() {
   return (
@@ -29,8 +30,12 @@ function App() {
         <Route path="/add-job" element={<ProtectedRoute>
                                           <AddJob />
                                         </ProtectedRoute>} />
+        <Route path="/edit-job/:id" element={<ProtectedRoute>
+                                                <EditJob/>
+                                              </ProtectedRoute>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
+        
       </Routes>
     </BrowserRouter>
   );

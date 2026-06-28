@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import "../styles/addjob.css";
 
 function AddJob() {
@@ -40,18 +40,11 @@ function AddJob() {
     }
 
     try {
-      await axios.post(
-        "http://127.0.0.1:8000/api/jobs/",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "access_token"
-            )}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      api.post("jobs/", data, {
+          headers:{
+              "Content-Type":"multipart/form-data"
+          }
+      });
 
       alert("Job Added Successfully");
       setLoading(false);

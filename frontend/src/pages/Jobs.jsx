@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CSVLink } from "react-csv"; 
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "../styles/jobs.css";
 
 function Jobs(){
@@ -9,18 +10,10 @@ function Jobs(){
     const [searchTerm, setSearchTerm]= useState("");
     const [statusFilter, setSearchFilter]= useState("All");
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axios
-        .get("http://127.0.0.1:8000/api/jobs/",
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "access_token"
-                    )}`,
-                },
-            }
-        )
+        api.get("jobs/")
         .then((response) => {
             setJobs(response.data);
             setLoading(false);
@@ -49,16 +42,7 @@ function Jobs(){
             return;
         }
         try {
-            await axios.delete(
-                `http://127.0.0.1:8000/api/jobs/${id}/`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                }
-            );
+            api.delete(`jobs/${id}/`)
 
             setJobs(
             jobs.filter((job) => job.id !== id)
@@ -71,19 +55,9 @@ function Jobs(){
     
     const updateStatus = async (id,newStatus)=>{
         try{
-            await axios.patch(
-                `http://127.0.0.1:8000/api/jobs/${id}/`,
-                {
-                    status: newStatus
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "access_token"
-                        )}`,
-                    },
-                }
-            );
+            api.patch(`jobs/${id}/`, {
+                status: newStatus
+            })
             setJobs(
                 jobs.map((job)=>
                     job.id === id
@@ -217,11 +191,19 @@ function Jobs(){
                                         "No File"
                                     )}
                                 </td>
-                                <td><button className="delete-btn"
-                                        onClick={()=>deleteJob(job.id)}>
+                                <td><>
+                                    <button className="edit-btn" 
+                                            onClick={() => navigate(`/edit-job/${job.id}`)}>
+                                        Edit
+                                    </button>
+
+                                    {" "}
+
+                                    <button className="delete-btn"
+                                        onClick={() => deleteJob(job.id)}>
                                         Delete
                                     </button>
-                                </td>
+                                </></td>
                             </tr>
                             ))
                         )}

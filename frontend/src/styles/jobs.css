@@ -69,6 +69,24 @@
     border-radius:8px;
 }
 
+.delete-btn:hover{
+    background: #dc2626;
+}
+
+.edit-btn{
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.edit-btn:hover{
+    background: #1d4ed8;
+}
+
 .resume-link{
     color:var(--primary);
     font-weight:bold;

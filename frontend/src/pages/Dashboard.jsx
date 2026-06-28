@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/dashboard.css";
-import axios from "axios";
+import api from "../services/api";
 import StatusChart from "../components/StatusChart";
 import MonthlyChart from "../components/MonthlyChart";
 
@@ -9,15 +9,7 @@ function Dashboard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(
-            "http://127.0.0.1:8000/api/jobs/",
-        {
-            headers :{
-                Authorization: `Bearer ${localStorage.getItem(
-                    "access_token"
-                )}`,
-            },
-        })
+        api.get("jobs/")
         .then((response) => {
             setJobs(response.data);
             setLoading(false);
