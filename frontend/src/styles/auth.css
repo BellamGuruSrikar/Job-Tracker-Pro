@@ -71,3 +71,15 @@
     color: var(--primary);
     font-weight: bold;
 }
+
+@media(max-width:768px){
+
+    .auth-card{
+
+        width:95%;
+
+        padding:25px;
+
+    }
+
+}

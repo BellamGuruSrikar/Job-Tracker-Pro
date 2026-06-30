@@ -91,3 +91,52 @@
     color:var(--primary);
     font-weight:bold;
 }
+
+.action-buttons{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+}
+
+.edit-btn,
+.delete-btn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.status-badge{
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+    display:inline-block;
+    min-width:90px;
+    text-align:center;
+}
+
+.status-applied{
+    background:#2563eb;
+}
+
+.status-interview{
+    background:#f59e0b;
+}
+
+.status-rejected{
+    background:#ef4444;
+}
+
+.status-offer{
+    background:#22c55e;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+.jobs-table{
+    min-width:900px;
+}

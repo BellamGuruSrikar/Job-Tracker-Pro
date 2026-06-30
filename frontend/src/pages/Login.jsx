@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/auth.css";
+import { toast } from "react-toastify";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -37,7 +38,7 @@ function Login() {
       window.location.href = "/";
     } catch (error) {
       console.log(error);
-      alert("Invalid Credentials");
+      toast.error("Invalid username or password.");
     }
   };
 

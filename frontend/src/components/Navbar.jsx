@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
 import "../styles/navbar.css";
+import { FaUser } from "react-icons/fa";
+import {
+    FaHome,
+    FaBriefcase,
+    FaPlusCircle,
+    FaSignOutAlt,
+    FaSignInAlt,
+    FaUserPlus,
+} from "react-icons/fa";
 
 function Navbar() {
   const token = localStorage.getItem("access_token");
@@ -24,24 +33,28 @@ function Navbar() {
       </div>
 
       <div className="nav-links">
+        
         {token ? (
-          <>
-            <Link to="/">Dashboard</Link>
-            <Link to="/jobs">Jobs</Link>
-            <Link to="/add-job">Add Job</Link>
-
-            <button
-              className="logout-btn"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </>
+            <>
+                <Link to="/"><FaHome /> Dashboard</Link>
+                <Link to="/jobs"><FaBriefcase /> Jobs</Link>
+                <Link to="/add-job"><FaPlusCircle /> Add Job</Link>
+                <Link to="/profile"><FaUser /> Profile</Link>
+                <button className="logout-btn"
+                    onClick={handleLogout}>
+                    <FaSignOutAlt /> Logout
+                </button>
+            </>
         ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
+            <>
+                <Link to="/login">
+                    <FaSignInAlt /> Login
+                </Link>
+
+                <Link to="/register">
+                    <FaUserPlus /> Register
+                </Link>
+            </>
         )}
       </div>
     </nav>

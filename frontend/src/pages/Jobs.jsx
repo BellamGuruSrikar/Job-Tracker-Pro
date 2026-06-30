@@ -3,6 +3,13 @@ import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/jobs.css";
+import LoadingSpinner from "../components/LoadingSpinner";
+import EmptyState from "../components/EmptyState";
+import {
+    FaEdit,
+    FaTrash,
+    FaFileDownload,
+} from "react-icons/fa";
 
 function Jobs(){
    
@@ -53,22 +60,6 @@ function Jobs(){
         }
     };
     
-    const updateStatus = async (id,newStatus)=>{
-        try{
-            api.patch(`jobs/${id}/`, {
-                status: newStatus
-            })
-            setJobs(
-                jobs.map((job)=>
-                    job.id === id
-                    ?{ ...job,status: newStatus}
-                    : job
-                )
-            );
-        } catch (error){
-            console.log(error);
-        }
-    };
     const filteredJobs = jobs.filter((job)=>{
         const matchesSearch=
           job.company_name
@@ -90,8 +81,8 @@ function Jobs(){
         ResumeVersion: job.resume_version,
         InterviewDate: job.interview_date,
     }));
-    if(loading){
-        return <h2>Loading Jobs...</h2>;
+    if (loading) {
+        return <LoadingSpinner />;
     }
 
     return (
@@ -104,7 +95,7 @@ function Jobs(){
                     filename={"job_applications.csv"}
                 >
                     <button className="export-btn">
-                        Export CSV
+                        <FaFileDownload/> Export CSV
                     </button>
                 </CSVLink>
             </div>
@@ -130,85 +121,74 @@ function Jobs(){
                 </select>
 
             </div>
-
-            <table className="jobs-table">
-                <thead>
-                    <tr>
-                        <th>Company</th>
-                        <th>Role</th>
-                        <th>Location</th>
-                        <th>Resume</th>
-                        <th>Interview Date</th>
-                        <th>Status</th>
-                        <th>Resume File</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {filteredJobs.length === 0 ? (
+            <div className="table-wrapper">
+                <table className="jobs-table">
+                    <thead>
                         <tr>
-                            <td
-                                colSpan="8"
-                                style={{
-                                    textAlign: "center",
-                                    padding: "20px",
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                No job applications found.
-                                <br />
-                                Click "Add Job" to create your first application.
-                            </td>
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Location</th>
+                            <th>Resume</th>
+                            <th>Interview Date</th>
+                            <th>Status</th>
+                            <th>Resume File</th>
+                            <th>Actions</th>
                         </tr>
-                    ) : (filteredJobs.map((job) => (
-                            <tr key={job.id}>
-                                <td>{job.company_name}</td>
-                                <td>{job.job_title}</td>
-                                <td>{job.location}</td>
-                                <td>{job.resume_version}</td>
-                                <td>{job.interview_date}</td>
-                                <td>
-                                    <select value={job.status} 
-                                    onChange={(e)=> updateStatus(job.id,e.target.value)}>
-                                        <option value="Applied">Applied</option>
-                                        <option value="Interview">Interview</option>
-                                        <option value="Rejected">Rejected</option>
-                                        <option value="Offer">Offer</option>
-                                    </select>
-                                </td>
-                                
-                                <td>
-                                    {job.resume_file ? (
-                                        <a className="resume-link"
-                                        href={`http://127.0.0.1:8000${job.resume_file}`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        >
-                                        View Resume
-                                        </a>
-                                    ) : (
-                                        "No File"
-                                    )}
-                                </td>
-                                <td><>
-                                    <button className="edit-btn" 
-                                            onClick={() => navigate(`/edit-job/${job.id}`)}>
-                                        Edit
-                                    </button>
+                    </thead>
 
-                                    {" "}
-
-                                    <button className="delete-btn"
-                                        onClick={() => deleteJob(job.id)}>
-                                        Delete
-                                    </button>
-                                </></td>
+                    <tbody>
+                        {filteredJobs.length === 0 ? (
+                            <tr>
+                                <td colSpan="8">
+                                     <EmptyState />
+                                </td>
                             </tr>
-                            ))
-                        )}
-                </tbody>
-            </table>
+                        ) : (filteredJobs.map((job) => (
+                                <tr key={job.id}>
+                                    <td>{job.company_name}</td>
+                                    <td>{job.job_title}</td>
+                                    <td>{job.location}</td>
+                                    <td>{job.resume_version}</td>
+                                    <td>{job.interview_date}</td>
+                                    <td>
+                                        <span
+                                            className={`status-badge status-${job.status.toLowerCase()}`}
+                                        >
+                                            {job.status}
+                                        </span>
+                                    </td>
+                                    
+                                    <td>
+                                        {job.resume_file ? (
+                                            <a className="resume-link"
+                                            href={`http://127.0.0.1:8000${job.resume_file}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            >
+                                            View Resume
+                                            </a>
+                                        ) : (
+                                            "No File"
+                                        )}
+                                    </td>
+                                    <td className="action-buttons">
+                                        <button className="edit-btn" 
+                                                onClick={() => navigate(`/edit-job/${job.id}`)}>
+                                            <FaEdit /> Edit
+                                        </button>
+
+                                        <button className="delete-btn"
+                                            onClick={() => deleteJob(job.id)}>
+                                            <FaTrash /> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                ))
+                            )}
+                    </tbody>
+                </table>
+            </div>
+           
         </div>
     );
 }

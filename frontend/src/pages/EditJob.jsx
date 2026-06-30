@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import LoadingSpinner from "../components/LoadingSpinner";
 import "../styles/addjob.css";
+import { toast } from "react-toastify";
 
 function EditJob() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
     const [resumeFile, setResumeFile] = useState(null);
 
     const [formData, setFormData] = useState({
@@ -42,9 +44,12 @@ function EditJob() {
                     interview_date: job.interview_date,
                     interview_notes: job.interview_notes,
                 });
-
+                setPageLoading(false);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                console.log(error);
+                setPageLoading(false);
+            });
     }, [id]);
 
     const handleChange = (e) => {
@@ -56,7 +61,22 @@ function EditJob() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Form Validation
+        if (!formData.company_name.trim()) {
+            toast.error("Company Name is required");
+            return;
+        }
 
+        if (!formData.job_title.trim()) {
+            toast.error("Job Title is required");
+            return;
+        }
+
+        if (!formData.date_applied) {
+            toast.error("Please select Date Applied");
+            return;
+        }
+        
         setLoading(true);
 
         const data = new FormData();
@@ -85,17 +105,20 @@ function EditJob() {
                 }
             })
 
-            alert("Job Updated Successfully");
+            toast.success("Job Updated Successfully");
 
             navigate("/jobs");
 
         } catch (error) {
             console.log(error.response?.data);
-            alert(JSON.stringify(error.response?.data, null, 2));
+            toast.error("Failed to update job.");
         }
 
         setLoading(false);
     };
+    if (pageLoading) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <div className="add-job-page">

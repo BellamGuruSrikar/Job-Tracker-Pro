@@ -64,3 +64,15 @@
 .save-btn:hover {
     background: var(--primary-dark);
 }
+
+@media(max-width:768px){
+
+.job-form{
+
+    width:95%;
+
+    padding:20px;
+
+}
+
+}

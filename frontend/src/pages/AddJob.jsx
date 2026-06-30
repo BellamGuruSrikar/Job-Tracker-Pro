@@ -1,6 +1,8 @@
 import { useState } from "react";
 import api from "../services/api";
 import "../styles/addjob.css";
+import { toast } from "react-toastify";
+import { FaPlusCircle } from "react-icons/fa";
 
 function AddJob() {
   const [loading, setLoading] = useState(false);
@@ -27,6 +29,21 @@ function AddJob() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (!formData.company_name.trim()) {
+      toast.error("Company Name is required");
+      return;
+    }
+
+    if (!formData.job_title.trim()) {
+      toast.error("Job Title is required");
+      return;
+    }
+
+    if (!formData.date_applied) {
+      toast.error("Select Date Applied");
+      return;
+    }
+
     setLoading(true);
 
     const data = new FormData();
@@ -40,13 +57,13 @@ function AddJob() {
     }
 
     try {
-      api.post("jobs/", data, {
+      await api.post("jobs/", data, {
           headers:{
               "Content-Type":"multipart/form-data"
           }
       });
 
-      alert("Job Added Successfully");
+      toast.success("Job Added Successfully");
       setLoading(false);
 
       setFormData({
@@ -67,17 +84,18 @@ function AddJob() {
       console.log(error);
       setLoading(false);
       if (error.response?.status === 401) {
-          alert("Session expired. Please login again.");
+          toast.error("Session expired. Please login again.");
       }
       else if (error.response?.status === 400) {
-          alert("Please fill all required fields.");
+          toast.warning("Please fill all required fields.");
       }
       else {
-          alert("Something went wrong.");
+          toast.error("Something went wrong.");
       }
     }
   };
   const [resumeFile, setResumeFile] = useState(null);
+  
 
   
   return (
@@ -192,7 +210,12 @@ function AddJob() {
           <button type="submit"
             className="save-btn"
              disabled={loading}>
-            {loading ? "Saving..." : "Save Job"}
+            {loading ? ("Saving...") : (
+              <>
+                <FaPlusCircle style={{ marginRight: "8px" }} />
+                Save Job
+              </>
+            )}
           </button>
 
         </form>

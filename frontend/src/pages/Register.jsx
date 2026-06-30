@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/auth.css";
+import { toast } from "react-toastify";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -27,11 +28,11 @@ function Register() {
         }
       );
 
-      alert("Registration Successful!");
+      toast.success("Registration Successful!");
       navigate("/login");
     } catch (error) {
       console.log(error);
-      alert("Registration Failed");
+      toast.error("Registration Failed");
     }
   };
 

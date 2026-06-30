@@ -52,3 +52,33 @@
 .logout-btn:hover {
     opacity: 0.9;
 }
+
+/* ---------------- RESPONSIVE NAVBAR ---------------- */
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    flex-wrap: wrap;
+}
+
+nav a,
+nav button {
+    margin: 5px;
+}
+
+@media (max-width: 768px) {
+
+    nav {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    nav a,
+    nav button {
+        width: 100%;
+    }
+
+}

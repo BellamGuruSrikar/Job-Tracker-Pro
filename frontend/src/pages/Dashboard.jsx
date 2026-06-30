@@ -3,6 +3,15 @@ import "../styles/dashboard.css";
 import api from "../services/api";
 import StatusChart from "../components/StatusChart";
 import MonthlyChart from "../components/MonthlyChart";
+import LoadingSpinner from "../components/LoadingSpinner";
+import {
+    FaBriefcase,
+    FaCheckCircle,
+    FaUserClock,
+    FaTimesCircle,
+    FaCalendarCheck,
+    FaTrophy,
+} from "react-icons/fa";
 
 function Dashboard() {
     const [jobs, setJobs] = useState([]);
@@ -42,8 +51,8 @@ function Dashboard() {
             job.interview_date &&
             new Date(job.interview_date) >= new Date()
     ).length;
-    if(loading){
-        return <h2>Loading Dashboard...</h2>;
+    if (loading) {
+        return <LoadingSpinner />;
     }
     return (
         <div className="dashboard">
@@ -51,32 +60,32 @@ function Dashboard() {
 
             <div className="stats-grid">
                 <div className="stat-card">
-                    <h3>Total Applications:</h3>
+                    <h3><FaBriefcase/> Total Applications:</h3>
                     <h2>{totalJobs}</h2>
                 </div>
 
                 <div className="stat-card">
-                    <h3>Applied:</h3>
+                    <h3><FaCheckCircle /> Applied:</h3>
                     <h2>{appliedJobs}</h2>
                 </div>
 
                 <div className="stat-card">
-                    <h3>Interviews:</h3>
+                    <h3><FaUserClock /> Interviews:</h3>
                     <h2>{interviews}</h2>
                 </div>
 
                 <div className="stat-card">
-                    <h3>Upcoming Interviews:</h3>
+                    <h3><FaCalendarCheck /> Upcoming Interviews:</h3>
                     <h2>{upcomingInterviews}</h2>
                 </div>
                 
                 <div className="stat-card">
-                    <h3>Rejected:</h3>
+                    <h3><FaTimesCircle /> Rejected:</h3>
                     <h2>{rejected}</h2>
                 </div>
 
                 <div className="stat-card">
-                    <h3>Offers:</h3>
+                    <h3><FaTrophy /> Offers:</h3>
                     <h2>{offers}</h2>
                 </div>
             </div>

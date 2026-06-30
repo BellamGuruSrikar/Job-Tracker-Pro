@@ -58,3 +58,16 @@
 .recent-list li:last-child {
     border-bottom: none;
 }
+
+
+@media (max-width:768px){
+
+    .stat-container{
+        flex-direction:column;
+    }
+
+    .stat-card{
+        width:100%;
+    }
+
+}
