@@ -1,4 +1,11 @@
 import { useState } from "react";
+import {
+    FaUser,
+    FaEnvelope,
+    FaLock,
+    FaEye,
+    FaEyeSlash
+} from "react-icons/fa";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/auth.css";
@@ -8,6 +15,7 @@ function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,26 +52,44 @@ function Register() {
 
         <form className="auth-form" onSubmit={handleRegister}>
 
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <div className="input-group">
+            <FaUser className="input-icon" />
 
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="input-group">
+            <FaEnvelope className="input-icon" />
+
+            <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          
+          <div className="password-field">
+            <FaLock className="input-icon" />
+            <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+                type="button"
+                className="eye-btn"
+                onClick={() => setShowPassword(!showPassword)}
+            >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
 
           <button type="submit">
             Register
@@ -83,4 +109,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Register;  

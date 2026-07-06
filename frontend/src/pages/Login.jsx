@@ -3,10 +3,17 @@ import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/auth.css";
 import { toast } from "react-toastify";
+import { 
+    FaEye,
+    FaEyeSlash,
+    FaUser,
+    FaLock
+} from "react-icons/fa";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   if (localStorage.getItem("access_token")) {
     return <Navigate to="/" />;
@@ -50,19 +57,37 @@ function Login() {
 
         <form className="auth-form" onSubmit={handleLogin}>
 
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <div className="input-group">
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <FaUser className="input-icon" />
+
+            <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+
+          </div>
+
+          <div className="password-field">
+            <FaLock className="input-icon" />
+            <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button
+                type="button"
+                className="eye-btn"
+                onClick={() => setShowPassword(!showPassword)}
+            >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+
+          </div>
 
           <button type="submit">
             Login

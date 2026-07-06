@@ -9,8 +9,10 @@ function EditJob() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [pageLoading, setPageLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [resumeFile, setResumeFile] = useState(null);
+    const [errors, setErrors] = useState({});
 
     const [formData, setFormData] = useState({
         company_name: "",
@@ -18,7 +20,7 @@ function EditJob() {
         location: "",
         job_url: "",
         date_applied: "",
-        status: "Applied",
+        status: "",
         notes: "",
         resume_version: "",
         interview_date: "",
@@ -36,13 +38,13 @@ function EditJob() {
                     company_name: job.company_name,
                     job_title: job.job_title,
                     location: job.location,
-                    job_url: job.job_url,
+                    job_url: job.job_url || "",
                     date_applied: job.date_applied,
                     status: job.status,
-                    notes: job.notes,
-                    resume_version: job.resume_version,
-                    interview_date: job.interview_date,
-                    interview_notes: job.interview_notes,
+                    notes: job.notes || "",
+                    resume_version: job.resume_version || "",
+                    interview_date: job.interview_date || "",
+                    interview_notes: job.interview_notes || "",
                 });
                 setPageLoading(false);
             })
@@ -53,29 +55,84 @@ function EditJob() {
     }, [id]);
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+
+        const { name, value } = e.target;
+        if (name === "status") {
+            setFormData((prev) => ({
+                ...prev,
+                status: value,
+
+                notes: "",
+                interview_date: "",
+                interview_notes: "",
+            }));
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
+
+        if (errors[name]) {
+            setErrors((prev) => ({
+                ...prev,
+                [name]: "",
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Form Validation
+        const validationErrors = {};
+        const missingFields = [];
+
+        // Company Name
         if (!formData.company_name.trim()) {
-            toast.error("Company Name is required");
-            return;
+            validationErrors.company_name = "Company name is required.";
+            missingFields.push("Company Name");
         }
 
+        // Job Title
         if (!formData.job_title.trim()) {
-            toast.error("Job Title is required");
+            validationErrors.job_title = "Job title is required.";
+            missingFields.push("Job Title");
+        }
+
+        // Location
+        if (!formData.location.trim()) {
+            validationErrors.location = "Location is required.";
+            missingFields.push("Location");
+        }
+
+        // Date Applied
+        if (!formData.date_applied) {
+            validationErrors.date_applied = "Please select the application date.";
+            missingFields.push("Date Applied");
+        }
+
+        // Status
+        if (!formData.status) {
+            validationErrors.status = "Please select a status.";
+            missingFields.push("Status");
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+
+            setErrors(validationErrors);
+
+            if (missingFields.length === 5) {
+                toast.warning("Please enter all the required fields.");
+            } else {
+                toast.warning(
+                    `Please enter: ${missingFields.join(", ")}`
+                );
+            }
+
             return;
         }
 
-        if (!formData.date_applied) {
-            toast.error("Please select Date Applied");
-            return;
-        }
+        setErrors({});
         
         setLoading(true);
 
@@ -86,7 +143,6 @@ function EditJob() {
         data.append("location", formData.location);
         data.append("date_applied", formData.date_applied);
         data.append("job_url", formData.job_url);
-        data.append("date_applied", formData.date_applied);
         data.append("status", formData.status);
         data.append("notes", formData.notes);
         data.append("resume_version", formData.resume_version);
@@ -123,53 +179,75 @@ function EditJob() {
     return (
         <div className="add-job-page">
             <div className="job-form">
-
                 <h1>Edit Job</h1>
-
                 <form onSubmit={handleSubmit}>
 
                     <div className="form-group">
-                        <label>Company Name</label>
-
+                        <label>Company Name <span className="required">*</span></label>
                         <input
+                            className={errors.company_name ? "error-input" : ""}
                             type="text"
                             name="company_name"
                             value={formData.company_name}
                             onChange={handleChange}
                         />
+
+                        {errors.company_name && (
+                            <small className="error-text">
+                                {errors.company_name}
+                            </small>
+                        )}
                     </div>
 
                     <div className="form-group">
-                        <label>Job Title</label>
-
+                        <label>Job Title <span className="required">*</span></label>
                         <input
+                            className={errors.job_title ? "error-input" : ""}
                             type="text"
                             name="job_title"
                             value={formData.job_title}
                             onChange={handleChange}
                         />
+
+                        {errors.job_title && (
+                            <small className="error-text">
+                                {errors.job_title}
+                            </small>
+                        )}
                     </div>
 
                     <div className="form-group">
-                        <label>Location</label>
-
+                        <label>Location <span className="required">*</span></label>
                         <input
+                            className={errors.location ? "error-input" : ""}
                             type="text"
                             name="location"
                             value={formData.location}
                             onChange={handleChange}
                         />
+
+                        {errors.location && (
+                            <small className="error-text">
+                                {errors.location}
+                            </small>
+                        )}
                     </div>
                     
                     <div className="form-group">
-                        <label>Date Applied</label>
-
+                        <label>Date Applied <span className="required">*</span></label>
                         <input
-                            type="date"
+                            className={errors.date_applied ? "error-input" : ""}
+                            type="data"
                             name="date_applied"
                             value={formData.date_applied}
                             onChange={handleChange}
                         />
+
+                        {errors.date_applied && (
+                            <small className="error-text">
+                                {errors.date_applied}
+                            </small>
+                        )}
                     </div>
 
                     <div className="form-group">
@@ -184,19 +262,28 @@ function EditJob() {
                     </div>
 
                     <div className="form-group">
-                        <label>Status</label>
-
+                        <label>Status <span className="required">*</span></label>
                         <select
+                            className={errors.status ? "error-input" : ""}
                             name="status"
                             value={formData.status}
                             onChange={handleChange}
                         >
+                            <option value="">-- Select Status --</option>
                             <option value="Applied">Applied</option>
                             <option value="Interview">Interview</option>
                             <option value="Rejected">Rejected</option>
                             <option value="Offer">Offer</option>
                         </select>
+
+                        {errors.status && (
+                            <small className="error-text">
+                                {errors.status}
+                            </small>
+                        )}
+
                     </div>
+
                     <div className="form-group">
                         <label>Resume Version</label>
 
@@ -207,6 +294,7 @@ function EditJob() {
                             onChange={handleChange}
                         />
                     </div>
+
                     <div className="form-group">
                         <label>Replace Resume (Optional)</label>
 
@@ -217,26 +305,69 @@ function EditJob() {
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label>Interview Date</label>
+                    {/* Applied */}
+                    {formData.status === "Applied" && (
+                        <div className="form-group">
+                            <label>Application Notes</label>
+                            <textarea
+                                name="notes"
+                                placeholder="Application Notes"
+                                value={formData.notes}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    )}
 
-                        <input
-                            type="date"
-                            name="interview_date"
-                            value={formData.interview_date || ""}
-                            onChange={handleChange}
-                        />
-                    </div>
+                    {/* Interview */}
+                    {formData.status === "Interview" && (
+                        <>
+                            <div className="form-group">
+                                <label>Interview Date</label>
+                                <input
+                                    type="date"
+                                    name="interview_date"
+                                    value={formData.interview_date || ""}
+                                    onChange={handleChange}
+                                />
+                            </div>
 
-                    <div className="form-group">
-                        <label>Interview Notes</label>
+                            <div className="form-group">
+                                <label>Interview Notes</label>
+                                <textarea
+                                    name="interview_notes"
+                                    placeholder="Interview Notes"
+                                    value={formData.interview_notes || ""}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </>
+                    )}
 
-                        <textarea
-                            name="interview_notes"
-                            value={formData.interview_notes || ""}
-                            onChange={handleChange}
-                        />
-                    </div>
+                    {/* Offer */}
+                    {formData.status === "Offer" && (
+                        <div className="form-group">
+                            <label>Offer Notes</label>
+                            <textarea
+                                name="notes"
+                                placeholder="Offer Notes"
+                                value={formData.notes}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    )}
+
+                    {/* Rejected */}
+                    {formData.status === "Rejected" && (
+                        <div className="form-group">
+                            <label>Rejection Notes</label>
+                            <textarea
+                                name="notes"
+                                placeholder="Reason / Notes"
+                                value={formData.notes}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    )}
 
                     <button
                         type="submit"
@@ -247,7 +378,6 @@ function EditJob() {
                     </button>
 
                 </form>
-
             </div>
         </div>
     );

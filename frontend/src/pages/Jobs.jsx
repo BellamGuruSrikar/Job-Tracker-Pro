@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import {useSearchParams,
+        useNavigate,
+        useLocation,
+        Link, } from "react-router-dom";
 import { CSVLink } from "react-csv"; 
-import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/jobs.css";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -15,9 +18,13 @@ function Jobs(){
    
     const [jobs, setJobs] = useState([]);
     const [searchTerm, setSearchTerm]= useState("");
-    const [statusFilter, setSearchFilter]= useState("All");
+    const [searchParams] = useSearchParams();
+    const statusFromUrl = searchParams.get("status");
+    const filterFromUrl = searchParams.get("filter");
+    const [statusFilter, setSearchFilter] = useState("All");
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         api.get("jobs/")
@@ -39,6 +46,13 @@ function Jobs(){
             setLoading(false);
             });
     }, []);
+    useEffect(() => {
+        if (statusFromUrl) {
+            setSearchFilter(statusFromUrl);
+        } else {
+            setSearchFilter("All");
+        }
+    }, [statusFromUrl]);
 
     const deleteJob = async (id) => {
         const confirmDelete = window.confirm(
@@ -49,31 +63,36 @@ function Jobs(){
             return;
         }
         try {
-            api.delete(`jobs/${id}/`)
-
-            setJobs(
-            jobs.filter((job) => job.id !== id)
+            await api.delete(`jobs/${id}/`)
+            setJobs((prevJobs) =>
+                prevJobs.filter((job) => job.id !== id)
             );
-
         } catch (error) {
             console.log(error);
         }
     };
-    
-    const filteredJobs = jobs.filter((job)=>{
-        const matchesSearch=
-          job.company_name
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
 
-        const matchesStatus=
-            statusFilter=== "All" ||
-            job.status=== statusFilter;
-        
+    const today = new Date().toISOString().split("T")[0];
+    const filteredJobs = jobs.filter((job) => {
+        const matchesSearch =
+            job.company_name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+        let matchesStatus = true;
+        if (filterFromUrl === "upcoming") {
+            matchesStatus =
+                job.status === "Interview" &&
+                job.interview_date &&
+                job.interview_date >= today;
+        } else {
+            matchesStatus =
+                statusFilter === "All" ||
+                job.status === statusFilter;
+        }
         return matchesSearch && matchesStatus;
     });
 
-    const csvData = jobs.map((job) => ({
+    const csvData = filteredJobs.map((job) => ({
         Company: job.company_name,
         JobTitle: job.job_title,
         Status: job.status,
@@ -85,10 +104,24 @@ function Jobs(){
         return <LoadingSpinner />;
     }
 
+    const totalFilteredJobs = filteredJobs.length;
+    let pageTitle = `All Applications (${totalFilteredJobs})`;
+    if (filterFromUrl === "upcoming") {
+        pageTitle = `Upcoming Interviews (${totalFilteredJobs})`;
+    }
+    else if (statusFilter !== "All") {
+        pageTitle = `${statusFilter} Applications (${totalFilteredJobs})`;
+    }
+
     return (
         <div className="jobs-page">
+            <Link to="/">
+                <button className="back-btn">
+                    ← Back to Dashboard
+                </button>
+            </Link>
             <div className="jobs-header">
-                <h1>My Applications</h1>
+                <h1>{pageTitle}</h1>
 
                 <CSVLink
                     data={csvData}
@@ -111,7 +144,18 @@ function Jobs(){
 
                 <select
                     value={statusFilter}
-                    onChange={(e)=>setSearchFilter(e.target.value)}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        setSearchFilter(value);
+                        if (location.search.includes("filter=upcoming")) {
+                            navigate(
+                                value === "All"
+                                    ? "/jobs"
+                                    : `/jobs?status=${value}`,
+                                { replace: true }
+                            );
+                        }
+                    }}
                 >
                     <option value="All">All</option>
                     <option value="Applied">Applied</option>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/dashboard.css";
 import api from "../services/api";
 import StatusChart from "../components/StatusChart";
@@ -11,11 +12,13 @@ import {
     FaTimesCircle,
     FaCalendarCheck,
     FaTrophy,
+    FaArrowRight,
 } from "react-icons/fa";
 
 function Dashboard() {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         api.get("jobs/")
@@ -46,46 +49,87 @@ function Dashboard() {
         (job) => job.status === "Offer"
     ).length;
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const upcomingInterviews = jobs.filter(
         (job) =>
+            job.status === "Interview" &&
             job.interview_date &&
-            new Date(job.interview_date) >= new Date()
+            new Date(job.interview_date) >= today
     ).length;
     if (loading) {
         return <LoadingSpinner />;
     }
+    const goToJobs = (status) => {
+        if (status === "Upcoming") {
+            navigate("/jobs?filter=upcoming");
+        } else {
+            navigate(`/jobs?status=${status}`);
+        }
+    };
     return (
         <div className="dashboard">
             <h1 className="dashboard-title">Dashboard</h1>
 
             <div className="stats-grid">
-                <div className="stat-card">
-                    <h3><FaBriefcase/> Total Applications:</h3>
+                <div className="stat-card clickable-card"
+                    onClick={() => goToJobs("All")}>
+                    <h3><span>
+                            <FaBriefcase/> Total Applications:
+                        </span>
+                        <FaArrowRight className="card-arrow" />
+                        </h3>
                     <h2>{totalJobs}</h2>
                 </div>
 
-                <div className="stat-card">
-                    <h3><FaCheckCircle /> Applied:</h3>
+                <div className="stat-card clickable-card"
+                    onClick={() => goToJobs("Applied")}>
+                    <h3><span>
+                            <FaCheckCircle /> Applied:
+                        </span>
+                        <FaArrowRight className="card-arrow" />
+                    </h3>
                     <h2>{appliedJobs}</h2>
                 </div>
 
-                <div className="stat-card">
-                    <h3><FaUserClock /> Interviews:</h3>
+                <div className="stat-card clickable-card"
+                    onClick={() => goToJobs("Interview")}>
+                    <h3><span>
+                            <FaUserClock /> Interviews:
+                        </span>
+                        <FaArrowRight className="card-arrow" />
+                    </h3>
                     <h2>{interviews}</h2>
                 </div>
 
-                <div className="stat-card">
-                    <h3><FaCalendarCheck /> Upcoming Interviews:</h3>
+                <div className="stat-card clickable-card"
+                    onClick={() => goToJobs("Upcoming")}>
+                    <h3><span>
+                            <FaCalendarCheck /> Upcoming Interviews:
+                        </span>
+                        <FaArrowRight className="card-arrow" />
+                    </h3>
                     <h2>{upcomingInterviews}</h2>
                 </div>
                 
-                <div className="stat-card">
-                    <h3><FaTimesCircle /> Rejected:</h3>
+                <div className="stat-card clickable-card"
+                    onClick={() => goToJobs("Rejected")}>
+                    <h3><span>
+                            <FaTimesCircle /> Rejected:
+                        </span>
+                        <FaArrowRight className="card-arrow" />
+                    </h3>
                     <h2>{rejected}</h2>
                 </div>
 
-                <div className="stat-card">
-                    <h3><FaTrophy /> Offers:</h3>
+                <div className="stat-card clickable-card"
+                    onClick={() => goToJobs("Offer")}>
+                    <h3><span>
+                            <FaTrophy /> Offers:
+                        </span>
+                        <FaArrowRight className="card-arrow" />
+                    </h3>
                     <h2>{offers}</h2>
                 </div>
             </div>
