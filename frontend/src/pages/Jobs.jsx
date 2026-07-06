@@ -8,6 +8,7 @@ import api from "../services/api";
 import "../styles/jobs.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 import EmptyState from "../components/EmptyState";
+import DeleteModal from "../components/DeleteModal";
 import {
     FaEdit,
     FaTrash,
@@ -18,11 +19,13 @@ function Jobs(){
    
     const [jobs, setJobs] = useState([]);
     const [searchTerm, setSearchTerm]= useState("");
+    const [statusFilter, setSearchFilter] = useState("All");
+    const [loading, setLoading] = useState(true);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedJob, setSelectedJob] = useState(null);
     const [searchParams] = useSearchParams();
     const statusFromUrl = searchParams.get("status");
     const filterFromUrl = searchParams.get("filter");
-    const [statusFilter, setSearchFilter] = useState("All");
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -54,19 +57,19 @@ function Jobs(){
         }
     }, [statusFromUrl]);
 
-    const deleteJob = async (id) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this application?"
-        );
+    const openDeleteModal = (job) => {
+        setSelectedJob(job);
+        setShowDeleteModal(true);
+    };
 
-        if(!confirmDelete){
-            return;
-        }
+    const deleteJob = async () => {
         try {
-            await api.delete(`jobs/${id}/`)
-            setJobs((prevJobs) =>
-                prevJobs.filter((job) => job.id !== id)
+            await api.delete(`jobs/${selectedJob.id}/`);
+            setJobs((prev) =>
+                prev.filter((job) => job.id !== selectedJob.id)
             );
+            setShowDeleteModal(false);
+            setSelectedJob(null);
         } catch (error) {
             console.log(error);
         }
@@ -188,7 +191,10 @@ function Jobs(){
                                 </td>
                             </tr>
                         ) : (filteredJobs.map((job) => (
-                                <tr key={job.id}>
+                                <tr key={job.id}
+                                    className="clickable-row"
+                                    onClick={() => navigate(`/jobs/${job.id}`)}
+                                >
                                     <td>{job.company_name}</td>
                                     <td>{job.job_title}</td>
                                     <td>{job.location}</td>
@@ -216,13 +222,21 @@ function Jobs(){
                                         )}
                                     </td>
                                     <td className="action-buttons">
-                                        <button className="edit-btn" 
-                                                onClick={() => navigate(`/edit-job/${job.id}`)}>
+                                        <button className="edit-btn"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate(`/edit-job/${job.id}`);
+                                            }}
+                                        >
                                             <FaEdit /> Edit
                                         </button>
 
                                         <button className="delete-btn"
-                                            onClick={() => deleteJob(job.id)}>
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                openDeleteModal(job);
+                                            }}
+                                        >
                                             <FaTrash /> Delete
                                         </button>
                                     </td>
@@ -232,8 +246,15 @@ function Jobs(){
                     </tbody>
                 </table>
             </div>
-           
+        <DeleteModal
+            isOpen={showDeleteModal}
+            company={selectedJob?.company_name}
+            role={selectedJob?.job_title}
+            onClose={() => setShowDeleteModal(false)}
+            onDelete={deleteJob}
+        />
         </div>
+
     );
 }
  

@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import EditJob from './pages/EditJob';
+import JobDetails from "./pages/JobDetails";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/profile" element={<ProtectedRoute>
                                               <Profile />
                                           </ProtectedRoute>} />
+          <Route path="/jobs/:id" element={<JobDetails />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="*" element={<NotFound />} />

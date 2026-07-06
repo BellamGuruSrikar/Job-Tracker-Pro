@@ -75,6 +75,15 @@
     background:#f8fafc;
 }
 
+.clickable-row{
+    cursor:pointer;
+    transition:.25s;
+}
+
+.clickable-row:hover{
+    background:#f8fbff;
+}
+
 .delete-btn{
     background:var(--danger);
     color:white;
