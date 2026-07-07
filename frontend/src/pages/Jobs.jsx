@@ -13,6 +13,7 @@ import {
     FaEdit,
     FaTrash,
     FaFileDownload,
+    FaUndoAlt,
 } from "react-icons/fa";
 
 function Jobs(){
@@ -20,10 +21,12 @@ function Jobs(){
     const [jobs, setJobs] = useState([]);
     const [searchTerm, setSearchTerm]= useState("");
     const [statusFilter, setSearchFilter] = useState("All");
+    const [sortBy, setSortBy] = useState("Newest");
     const [loading, setLoading] = useState(true);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
     const [searchParams] = useSearchParams();
+    const highlightId = searchParams.get("highlight");
     const statusFromUrl = searchParams.get("status");
     const filterFromUrl = searchParams.get("filter");
     const navigate = useNavigate();
@@ -56,6 +59,16 @@ function Jobs(){
             setSearchFilter("All");
         }
     }, [statusFromUrl]);
+    useEffect(() => {
+        if (!highlightId) return;
+        const row = document.getElementById(`job-${highlightId}`);
+        if (row) {
+            row.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        }
+    }, [jobs, highlightId]);
 
     const openDeleteModal = (job) => {
         setSelectedJob(job);
@@ -77,10 +90,16 @@ function Jobs(){
 
     const today = new Date().toISOString().split("T")[0];
     const filteredJobs = jobs.filter((job) => {
+        const search = searchTerm.toLowerCase();
         const matchesSearch =
-            job.company_name
+            job.company_name.toLowerCase().includes(search) ||
+            job.job_title.toLowerCase().includes(search) ||
+            job.location.toLowerCase().includes(search) ||
+            (job.resume_version || "")
                 .toLowerCase()
-                .includes(searchTerm.toLowerCase());
+                .includes(search) ||
+            job.status.toLowerCase().includes(search);
+
         let matchesStatus = true;
         if (filterFromUrl === "upcoming") {
             matchesStatus =
@@ -94,6 +113,46 @@ function Jobs(){
         }
         return matchesSearch && matchesStatus;
     });
+
+    const sortedJobs = [...filteredJobs];
+    switch (sortBy) {
+        case "Newest":
+            sortedJobs.sort(
+                (a, b) =>
+                    new Date(b.date_applied) -
+                    new Date(a.date_applied)
+            );
+            break;
+
+        case "Oldest":
+            sortedJobs.sort(
+                (a, b) =>
+                    new Date(a.date_applied) -
+                    new Date(b.date_applied)
+            );
+            break;
+
+        case "CompanyAZ":
+            sortedJobs.sort((a, b) =>
+                a.company_name.localeCompare(b.company_name)
+            );
+            break;
+
+        case "CompanyZA":
+            sortedJobs.sort((a, b) =>
+                b.company_name.localeCompare(a.company_name)
+            );
+            break;
+
+        case "Status":
+            sortedJobs.sort((a, b) =>
+                a.status.localeCompare(b.status)
+            );
+            break;
+
+        default:
+            break;
+    }
 
     const csvData = filteredJobs.map((job) => ({
         Company: job.company_name,
@@ -126,21 +185,29 @@ function Jobs(){
             <div className="jobs-header">
                 <h1>{pageTitle}</h1>
 
-                <CSVLink
-                    data={csvData}
-                    filename={"job_applications.csv"}
-                >
-                    <button className="export-btn">
-                        <FaFileDownload/> Export CSV
+                {filteredJobs.length > 0 ? (
+                    <CSVLink data={csvData}
+                        filename={"job_applications.csv"}
+                    >
+                        <button className="export-btn">
+                            <FaFileDownload /> Export CSV
+                        </button>
+                    </CSVLink>
+                ) : (
+                    <button className="export-btn disabled-btn"
+                        disabled
+                    >
+                        <FaFileDownload /> Export CSV
                     </button>
-                </CSVLink>
+                )}
+
             </div>
 
             <div className="top-controls">
 
                 <input
                     type="text"
-                    placeholder="Search Company..."
+                    placeholder="Search company, role, location..."
                     value={searchTerm}
                     onChange={(e)=>setSearchTerm(e.target.value)}
                 />
@@ -167,6 +234,28 @@ function Jobs(){
                     <option value="Offer">Offer</option>
                 </select>
 
+                <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                >
+                    <option value="Newest">Newest First</option>
+                    <option value="Oldest">Oldest First</option>
+                    <option value="CompanyAZ">Company A-Z</option>
+                    <option value="CompanyZA">Company Z-A</option>
+                    <option value="Status">Status</option>
+                </select>
+
+                <button
+                    className="reset-btn"
+                    onClick={() => { setSearchTerm("");
+                        setSearchFilter("All");
+                        setSortBy("Newest");
+                    }}
+                >
+                    <FaUndoAlt style={{ marginRight: "8px" }} />
+                    Reset
+                </button>
+
             </div>
             <div className="table-wrapper">
                 <table className="jobs-table">
@@ -190,16 +279,24 @@ function Jobs(){
                                      <EmptyState />
                                 </td>
                             </tr>
-                        ) : (filteredJobs.map((job) => (
-                                <tr key={job.id}
-                                    className="clickable-row"
-                                    onClick={() => navigate(`/jobs/${job.id}`)}
+                        ) : (sortedJobs.map((job) => (
+                                <tr id={`job-${job.id}`}
+                                    key={job.id}
+                                    className={`clickable-row ${
+                                        Number(highlightId) === job.id ? "highlight-row" : ""
+                                    }`}
+                                    onClick={() => navigate(`/jobs/${job.id}`, {
+                                            state: {
+                                                from: location.pathname + location.search,
+                                            },
+                                        })
+                                    }
                                 >
                                     <td>{job.company_name}</td>
                                     <td>{job.job_title}</td>
                                     <td>{job.location}</td>
-                                    <td>{job.resume_version}</td>
-                                    <td>{job.interview_date}</td>
+                                    <td>{job.resume_version || "Not Available"}</td>
+                                    <td>{job.interview_date || "Not Scheduled"}</td>
                                     <td>
                                         <span
                                             className={`status-badge status-${job.status.toLowerCase()}`}
@@ -211,11 +308,12 @@ function Jobs(){
                                     <td>
                                         {job.resume_file ? (
                                             <a className="resume-link"
-                                            href={`http://127.0.0.1:8000${job.resume_file}`}
-                                            target="_blank"
-                                            rel="noreferrer"
+                                                href={job.resume_file}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                onClick={(e) => e.stopPropagation()}
                                             >
-                                            View Resume
+                                                View Resume
                                             </a>
                                         ) : (
                                             "No File"
@@ -246,13 +344,13 @@ function Jobs(){
                     </tbody>
                 </table>
             </div>
-        <DeleteModal
-            isOpen={showDeleteModal}
-            company={selectedJob?.company_name}
-            role={selectedJob?.job_title}
-            onClose={() => setShowDeleteModal(false)}
-            onDelete={deleteJob}
-        />
+            <DeleteModal
+                isOpen={showDeleteModal}
+                company={selectedJob?.company_name}
+                role={selectedJob?.job_title}
+                onClose={() => setShowDeleteModal(false)}
+                onDelete={deleteJob}
+            />
         </div>
 
     );

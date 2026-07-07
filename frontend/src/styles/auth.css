@@ -10,13 +10,9 @@
 
 .auth-card {
     width: 400px;
-
     background: white;
-
     padding: 40px;
-
     border-radius: var(--radius);
-
     box-shadow: var(--shadow);
 }
 
@@ -34,11 +30,8 @@
 
 .auth-form input {
     padding: 12px;
-
     border: 1px solid var(--border);
-
     border-radius: var(--radius);
-
     font-size: 15px;
 }
 .password-field {
@@ -132,13 +125,8 @@
 }
 
 @media(max-width:768px){
-
     .auth-card{
-
         width:95%;
-
         padding:25px;
-
     }
-
 }

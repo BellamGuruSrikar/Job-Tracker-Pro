@@ -136,9 +136,12 @@ function Dashboard() {
             <h2 className="section-title">Recent Applications</h2>
             <ul className="recent-list">
                 {jobs.slice(0,5).map((job)=>(
-                    <li key={job.id}>
-                        {job.company_name}-{job.job_title}-{job.status}
-                    </li>
+                <li key={job.id}
+                    className="recent-job"
+                    onClick={() => navigate(`/jobs?highlight=${job.id}`)}
+                >
+                    {job.company_name} - {job.job_title} - {job.status}
+                </li>
                 ))}
             </ul>
 

@@ -156,262 +156,250 @@ function AddJob() {
     };
     const [resumeFile, setResumeFile] = useState(null);
     const fileInputRef = useRef(null);
-  
+
+    const isFormValid =
+        formData.company_name.trim() !== "" ||
+        formData.job_title.trim() !== "" ||
+        formData.location.trim() !== "" ||
+        formData.date_applied !== "" ||
+        formData.status !== "";
+
     return (
         <div className="add-job-page">
-        <div className="job-form">
-            <h1>Add New Job</h1>
+            <div className="job-form">
+                <h1>Add New Job</h1>
 
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-
-                    <label>
-                        Company Name
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        className={errors.company_name ? "error-input" : ""}
-                        type="text"
-                        name="company_name"
-                        placeholder="Company Name"
-                        value={formData.company_name}
-                        onChange={handleChange}
-                    />
-
-                    {errors.company_name && (
-                        <small className="error-text">
-                            {errors.company_name}
-                        </small>
-                    )}
-
-                </div>
-            
-                <div className="form-group">
-
-                    <label>
-                        Job Title
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        className={errors.job_title ? "error-input" : ""}
-                        type="text"
-                        name="job_title"
-                        placeholder="Job Title"
-                        value={formData.job_title}
-                        onChange={handleChange}
-                    />
-
-                    {errors.job_title && (
-                        <small className="error-text">
-                            {errors.job_title}
-                        </small>
-                    )}
-
-                </div>
-
-                <div className="form-group">
-
-                    <label>
-                        Location
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        className={errors.location ? "error-input" : ""}
-                        type="text"
-                        name="location"
-                        placeholder="Location"
-                        value={formData.location}
-                        onChange={handleChange}
-                    />
-
-                    {errors.location && (
-                        <small className="error-text">
-                            {errors.location}
-                        </small>
-                    )}
-
-                </div>
-
-                <div className="form-group">
-                    <label>Job URL</label>
-
-                    <input
-                        type="url"
-                        name="job_url"
-                        placeholder="https://company.com/job"
-                        value={formData.job_url}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div className="form-group">
-
-                    <label>
-                        Date Applied
-                        <span className="required">*</span>
-                    </label>
-
-                    <input
-                        className={errors.date_applied ? "error-input" : ""}
-                        type="date"
-                        name="date_applied"
-                        value={formData.date_applied}
-                        onChange={handleChange}
-                    />
-
-                    {errors.date_applied && (
-                        <small className="error-text">
-                            {errors.date_applied}
-                        </small>
-                    )}
-                </div>
-
-                <div className="form-group">
-                    <label>Resume Version</label>
-
-                    <input
-                        type="text"
-                        name="resume_version"
-                        placeholder="Resume Version"
-                        value={formData.resume_version}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label>Upload Resume (PDF)</label>
-
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept=".pdf"
-                        onChange={(e) =>
-                        setResumeFile(e.target.files[0])
-                        }
-                    />
-                </div>
-            
-                <div className="form-group">
-                    <label>
-                        Status
-                        <span className="required">*</span>
-                    </label>
-
-                    <select
-                        className={errors.status ? "error-input" : ""}
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                    >
-                        <option value="">-- Select Status --</option>
-                        <option value="Applied">Applied</option>
-                        <option value="Interview">Interview</option>
-                        <option value="Rejected">Rejected</option>
-                        <option value="Offer">Offer</option>
-                    </select>
-
-                    {errors.status && (
-                        <small className="error-text">
-                            {errors.status}
-                        </small>
-                    )}
-                </div>
-
-                {/* Applied */}
-                {formData.status === "Applied" && (
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
+                        <label>
+                            Company Name
+                            <span className="required">*</span>
+                        </label>
 
-                        <label>Application Notes</label>
-
-                        <textarea
-                            name="notes"
-                            placeholder="Application Notes"
-                            value={formData.notes}
+                        <input
+                            className={errors.company_name ? "error-input" : ""}
+                            type="text"
+                            name="company_name"
+                            placeholder="Company Name"
+                            value={formData.company_name}
                             onChange={handleChange}
                         />
-
+                        {errors.company_name && (
+                            <small className="error-text">
+                                {errors.company_name}
+                            </small>
+                        )}
                     </div>
-                )}
+                
+                    <div className="form-group">
+                        <label>
+                            Job Title
+                            <span className="required">*</span>
+                        </label>
+                        <input
+                            className={errors.job_title ? "error-input" : ""}
+                            type="text"
+                            name="job_title"
+                            placeholder="Job Title"
+                            value={formData.job_title}
+                            onChange={handleChange}
+                        />
+                        {errors.job_title && (
+                            <small className="error-text">
+                                {errors.job_title}
+                            </small>
+                        )}
+                    </div>
 
-                {/* Interview */}
-                {formData.status === "Interview" && (
-                    <>
+                    <div className="form-group">
+                        <label>
+                            Location
+                            <span className="required">*</span>
+                        </label>
+                        <input
+                            className={errors.location ? "error-input" : ""}
+                            type="text"
+                            name="location"
+                            placeholder="Location"
+                            value={formData.location}
+                            onChange={handleChange}
+                        />
+                        {errors.location && (
+                            <small className="error-text">
+                                {errors.location}
+                            </small>
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <label>Job URL</label>
+                        <input
+                            type="url"
+                            name="job_url"
+                            placeholder="https://company.com/job"
+                            value={formData.job_url}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>
+                            Date Applied
+                            <span className="required">*</span>
+                        </label>
+                        <input
+                            className={errors.date_applied ? "error-input" : ""}
+                            type="date"
+                            name="date_applied"
+                            value={formData.date_applied}
+                            onChange={handleChange}
+                        />
+                        {errors.date_applied && (
+                            <small className="error-text">
+                                {errors.date_applied}
+                            </small>
+                        )}
+                    </div>
+
+                    <div className="form-group">
+                        <label>Resume Version</label>
+                        <input
+                            type="text"
+                            name="resume_version"
+                            placeholder="Resume Version"
+                            value={formData.resume_version}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Upload Resume (PDF)</label>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".pdf"
+                            onChange={(e) =>
+                            setResumeFile(e.target.files[0])
+                            }
+                        />
+                    </div>
+                
+                    <div className="form-group">
+                        <label>
+                            Status
+                            <span className="required">*</span>
+                        </label>
+                        <select className={errors.status ? "error-input" : ""}
+                            name="status"
+                            value={formData.status}
+                            onChange={handleChange}
+                        >
+                            <option value="">-- Select Status --</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Offer">Offer</option>
+                        </select>
+
+                        {errors.status && (
+                            <small className="error-text">
+                                {errors.status}
+                            </small>
+                        )}
+                    </div>
+
+                    {/* Applied */}
+                    {formData.status === "Applied" && (
                         <div className="form-group">
 
-                            <label>Interview Date</label>
-
-                            <input
-                                type="date"
-                                name="interview_date"
-                                value={formData.interview_date}
-                                onChange={handleChange}
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Interview Notes</label>
+                            <label>Application Notes</label>
 
                             <textarea
-                                name="interview_notes"
-                                placeholder="Interview Notes"
-                                value={formData.interview_notes}
+                                name="notes"
+                                placeholder="Application Notes"
+                                value={formData.notes}
                                 onChange={handleChange}
                             />
 
                         </div>
-                    </>
-                )}
-
-                {/* Offer */}
-                {formData.status === "Offer" && (
-                    <div className="form-group">
-
-                        <label>Offer Notes</label>
-
-                        <textarea
-                            name="notes"
-                            placeholder="Offer Notes"
-                            value={formData.notes}
-                            onChange={handleChange}
-                        />
-
-                    </div>
-                )}
-
-                {/* Rejected */}
-                {formData.status === "Rejected" && (
-                    <div className="form-group">
-
-                        <label>Rejection Notes</label>
-
-                        <textarea
-                            name="notes"
-                            placeholder="Reason / Notes"
-                            value={formData.notes}
-                            onChange={handleChange}
-                        />
-
-                    </div>
-                )}
-
-
-                <button type="submit"
-                    className="save-btn"
-                    disabled={loading}>
-                    {loading ? ("Saving...") : (
-                    <>
-                        <FaPlusCircle style={{ marginRight: "8px" }} />
-                        Save Job
-                    </>
                     )}
-                </button>
-            </form>
-        </div>
+
+                    {/* Interview */}
+                    {formData.status === "Interview" && (
+                        <>
+                            <div className="form-group">
+
+                                <label>Interview Date</label>
+
+                                <input
+                                    type="date"
+                                    name="interview_date"
+                                    value={formData.interview_date}
+                                    onChange={handleChange}
+                                />
+
+                            </div>
+
+                            <div className="form-group">
+
+                                <label>Interview Notes</label>
+
+                                <textarea
+                                    name="interview_notes"
+                                    placeholder="Interview Notes"
+                                    value={formData.interview_notes}
+                                    onChange={handleChange}
+                                />
+
+                            </div>
+                        </>
+                    )}
+
+                    {/* Offer */}
+                    {formData.status === "Offer" && (
+                        <div className="form-group">
+
+                            <label>Offer Notes</label>
+
+                            <textarea
+                                name="notes"
+                                placeholder="Offer Notes"
+                                value={formData.notes}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+                    )}
+
+                    {/* Rejected */}
+                    {formData.status === "Rejected" && (
+                        <div className="form-group">
+
+                            <label>Rejection Notes</label>
+
+                            <textarea
+                                name="notes"
+                                placeholder="Reason / Notes"
+                                value={formData.notes}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+                    )}
+
+
+                    <button type="submit"
+                        className={`save-btn ${!isFormValid ? "disabled-save-btn" : ""}`}
+                        disabled={loading || !isFormValid}>
+                        {loading ? ("Saving...") : (
+                        <>
+                            <FaPlusCircle style={{ marginRight: "8px" }} />
+                            Save Job
+                        </>
+                        )}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }

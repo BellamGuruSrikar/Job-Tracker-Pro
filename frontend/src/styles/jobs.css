@@ -42,6 +42,23 @@
     font-size:15px;
 }
 
+.reset-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.reset-btn:hover{
+    background:#dc2626;
+}
+
 .export-btn{
     background:var(--primary);
     color:white;
@@ -49,6 +66,12 @@
     padding:10px 18px;
     border-radius:var(--radius);
     cursor:pointer;
+}
+
+.disabled-btn{
+    opacity:.6;
+    cursor:not-allowed;
+    pointer-events:none;
 }
 
 .jobs-table{
@@ -162,4 +185,28 @@
 
 .jobs-table{
     min-width:900px;
+}
+
+.highlight-row {
+    background: #fff7cc !important;
+    animation: highlightFade 3s ease;
+}
+
+@keyframes highlightFade {
+    0% {
+        background: #ffe066;
+    }
+    100% {
+        background: #fff7cc;
+    }
+}
+
+.recent-job {
+    cursor: pointer;
+    transition: .3s;
+}
+
+.recent-job:hover {
+    color: #2563eb;
+    transform: translateX(5px);
 }
