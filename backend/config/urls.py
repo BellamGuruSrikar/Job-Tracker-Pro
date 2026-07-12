@@ -23,8 +23,10 @@ from rest_framework_simplejwt.views import (
 )
 from django.conf import settings
 from django.conf.urls.static import static
+from jobs.views import home
 
 urlpatterns = [
+    path("", home),
     path("admin/", admin.site.urls),
     path("api/", include('jobs.urls')),
     path("api/token/",TokenObtainPairView.as_view()),

@@ -4,6 +4,7 @@ from .models import JobApplication
 from .serializers import JobApplicationSerializer, RegisterSerializer
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
 
 # Create your views here.
 class JobApplicationListCreateView(generics.ListCreateAPIView):
@@ -25,6 +26,13 @@ class JobApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
         return JobApplication.objects.filter(
             user=self.request.user
         )
+    
+def home(request):
+    return JsonResponse({
+        "message": "Job Tracker Backend API",
+        "status": "Running",
+        "version": "1.0"
+    })
 
 class RegisterView(generics.CreateAPIView):
     queryset= User.objects.all()
