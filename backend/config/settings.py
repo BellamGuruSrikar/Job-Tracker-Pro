@@ -152,12 +152,7 @@ STATICFILES_STORAGE = (
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
-    CORS_ALLOWED_ORIGINS = [
-        config("FRONTEND_URL")
-    ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
