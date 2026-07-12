@@ -116,3 +116,23 @@
 }
 
 }
+@media(max-width:425px){
+    .add-job-page{
+        padding:15px;
+    }
+
+    .job-form{
+        padding:20px;
+    }
+
+    .job-form h1{
+        font-size:28px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea{
+        width:100%;
+        font-size:15px;
+    }
+}

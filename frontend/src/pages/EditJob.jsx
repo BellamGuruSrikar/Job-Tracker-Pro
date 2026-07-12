@@ -62,7 +62,6 @@ function EditJob() {
                 });
             })
             .catch((error) => {
-                console.log(error);
                 setPageLoading(false);
             });
     }, [id]);
@@ -179,7 +178,6 @@ function EditJob() {
             navigate("/jobs");
 
         } catch (error) {
-            console.log(error.response?.data);
             toast.error("Failed to update job.");
         }
 

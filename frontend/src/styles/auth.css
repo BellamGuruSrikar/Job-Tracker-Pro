@@ -130,3 +130,15 @@
         padding:25px;
     }
 }
+@media(max-width:320px){
+    .auth-page{
+        padding:15px;
+    }
+    .auth-card{
+        width:100%;
+        padding:20px;
+    }
+    .auth-card h1{
+        font-size:24px;
+    }
+}

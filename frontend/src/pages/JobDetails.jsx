@@ -36,7 +36,6 @@ function JobDetails() {
                 setLoading(false);
             })
             .catch((error) => {
-                console.log(error);
                 setLoading(false);
             });
 
@@ -60,7 +59,6 @@ function JobDetails() {
                 navigate(previousPage);
             }, 1000);
         } catch (error) {
-            console.log(error);
             toast.error("Failed to delete application.");
         }
     };

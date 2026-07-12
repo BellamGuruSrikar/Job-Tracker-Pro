@@ -181,10 +181,11 @@
 
 .table-wrapper{
     overflow-x:auto;
+    width:100%;
 }
 
 .jobs-table{
-    min-width:900px;
+    min-width:900px;  
 }
 
 .highlight-row {
@@ -209,4 +210,16 @@
 .recent-job:hover {
     color: #2563eb;
     transform: translateX(5px);
+}
+
+@media(max-width:425px){
+    .top-controls{
+        flex-direction:column;
+        gap:12px;
+    }
+    .top-controls input,
+    .top-controls select,
+    .top-controls button{
+        width:100%;
+    }
 }

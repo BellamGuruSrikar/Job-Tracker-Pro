@@ -92,8 +92,11 @@
     border-bottom: none;
 }
 
+.chart-section{
+    overflow-x:auto;
+}
 
-@media (max-width:768px){
+/* @media (max-width:768px){
 
     .stat-container{
         flex-direction:column;
@@ -103,4 +106,24 @@
         width:100%;
     }
 
+} */
+
+@media (max-width:425px){
+    .dashboard{
+        padding:15px;
+    }
+    .dashboard-title{
+        font-size:28px;
+    }
+    .stats-grid{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+    .stat-card{
+        padding:18px;
+    }
+
+    .stat-card h2{
+        font-size:28px;
+    }
 }

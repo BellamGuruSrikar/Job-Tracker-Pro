@@ -16,6 +16,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       await axios.post(
         `${import.meta.env.VITE_API_URL}/register/`,
@@ -37,10 +38,13 @@ function Register() {
       );
 
       toast.success("Registration Successful!");
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1200);
     } catch (error) {
-      console.log(error);
       toast.error("Registration Failed");
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -91,8 +95,10 @@ function Register() {
             </button>
           </div>
 
-          <button type="submit">
-            Register
+          <button type="submit"
+            disabled={loading}
+          >
+            {loading ? "Creating Account..." : "Register"}
           </button>
 
         </form>

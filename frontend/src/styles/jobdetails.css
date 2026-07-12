@@ -175,3 +175,8 @@
     color:#666;
     font-size:14px;
 }
+@media(max-width:425px){
+    .details-grid{
+        grid-template-columns:1fr;
+    }
+}

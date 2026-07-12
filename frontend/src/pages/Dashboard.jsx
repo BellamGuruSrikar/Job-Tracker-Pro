@@ -5,6 +5,7 @@ import api from "../services/api";
 import StatusChart from "../components/StatusChart";
 import MonthlyChart from "../components/MonthlyChart";
 import LoadingSpinner from "../components/LoadingSpinner";
+import EmptyState from "../components/EmptyState";
 import {
     FaBriefcase,
     FaCheckCircle,
@@ -26,7 +27,7 @@ function Dashboard() {
             setJobs(response.data);
             setLoading(false);
         })
-        .catch((error) =>{ console.log(error);
+        .catch((error) =>{ 
                 setLoading(false);
             });
     }, []);
@@ -134,22 +135,38 @@ function Dashboard() {
                 </div>
             </div>
             <h2 className="section-title">Recent Applications</h2>
-            <ul className="recent-list">
-                {jobs.slice(0,5).map((job)=>(
-                <li key={job.id}
-                    className="recent-job"
-                    onClick={() => navigate(`/jobs?highlight=${job.id}`)}
-                >
-                    {job.company_name} - {job.job_title} - {job.status}
-                </li>
-                ))}
-            </ul>
+            {jobs.length === 0 ? (
+                <EmptyState />
+            ) : (
+                <ul className="recent-list">
+                    {jobs.slice(0,5).map((job) => (
+                        <li key={job.id}
+                            className="recent-job"
+                            onClick={() => navigate(`/jobs?highlight=${job.id}`)}
+                        >
+                            {job.company_name} - {job.job_title} - {job.status}
+                        </li>
+                    ))}
+                </ul>
+            )}
 
             <h2 className="section-title">Applications By Status</h2>
-            <StatusChart jobs={jobs} />
+            {jobs.length === 0 ? (
+                <EmptyState />
+            ) : (
+                <div className="chart-section">
+                    <StatusChart jobs={jobs} />
+                </div>
+            )}
 
             <h2 className="section-title">Applications Per Month</h2>
-            <MonthlyChart jobs={jobs}/>
+            {jobs.length === 0 ? (
+                <EmptyState />
+            ) : (
+                <div className="chart-section">
+                    <MonthlyChart jobs={jobs} />
+                </div>  
+            )}
         </div>
     );
 }

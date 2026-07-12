@@ -14,6 +14,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (localStorage.getItem("access_token")) {
     return <Navigate to="/" />;
@@ -21,6 +22,7 @@ function Login() {
   
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -41,11 +43,13 @@ function Login() {
         response.data.refresh
       );
 
-      console.log("Login Success");
+      toast.success("Login Successful!");
+
       window.location.href = "/";
     } catch (error) {
-      console.log(error);
       toast.error("Invalid username or password.");
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -89,8 +93,10 @@ function Login() {
 
           </div>
 
-          <button type="submit">
-            Login
+          <button type="submit"
+              disabled={loading}
+          >
+            {loading ? "Signing In..." : "Login"}
           </button>
 
         </form>

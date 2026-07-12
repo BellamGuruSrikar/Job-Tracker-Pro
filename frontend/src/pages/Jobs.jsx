@@ -47,8 +47,6 @@ function Jobs(){
                 window.location.href="/login";
             }
 
-            console.log(error);
-
             setLoading(false);
             });
     }, []);

@@ -141,17 +141,16 @@ function AddJob() {
             }
 
         } catch (error) {
-        console.log(error);
-        setLoading(false);
-        if (error.response?.status === 401) {
-            toast.error("Session expired. Please login again.");
-        }
-        else if (error.response?.status === 400) {
-            toast.warning("Please fill all required fields.");
-        }
-        else {
-            toast.error("Something went wrong.");
-        }
+            setLoading(false);
+            if (error.response?.status === 401) {
+                toast.error("Session expired. Please login again.");
+            }
+            else if (error.response?.status === 400) {
+                toast.warning("Please fill all required fields.");
+            }
+            else {
+                toast.error("Something went wrong.");
+            }
         }
     };
     const [resumeFile, setResumeFile] = useState(null);
