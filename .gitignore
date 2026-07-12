@@ -1,6 +1,36 @@
+# -------------------------
+# Python
+# -------------------------
 venv/
 __pycache__/
-*.pyc
-node_modules/
-.env
+*.py[cod]
+
+# Database
 db.sqlite3
+
+# Environment Variables
+.env
+.env.*
+
+# Media Uploads
+backend/media/
+
+# Collected Static Files
+backend/staticfiles/
+
+# -------------------------
+# React / Node
+# -------------------------
+node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
