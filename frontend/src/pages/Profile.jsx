@@ -6,6 +6,9 @@ import "../styles/profile.css";
 function Profile() {
     const [loading, setLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
+    useEffect(() => {
+        document.title = "Profile | Job Tracker";
+    }, []);
 
     useEffect(() => {
         api.get("jobs/")

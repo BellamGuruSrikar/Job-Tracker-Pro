@@ -9,6 +9,9 @@ import { FaArrowLeft, FaSave } from "react-icons/fa";
 function EditJob() {
     const { id } = useParams();
     const navigate = useNavigate();
+    useEffect(() => {
+        document.title = "Edit Job | Job Tracker";
+    }, []);
 
     const [pageLoading, setPageLoading] = useState(true);
     const [loading, setLoading] = useState(false);

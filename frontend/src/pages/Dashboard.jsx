@@ -18,6 +18,9 @@ import {
 
 function Dashboard() {
     const [jobs, setJobs] = useState([]);
+    useEffect(() => {
+        document.title = "Dashboard | Job Tracker";
+    }, []);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 

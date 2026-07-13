@@ -27,13 +27,13 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "job-tracker-backend-tpny.onrender.com",
-]
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default="127.0.0.1,localhost",
+).split(",")
 
 CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
     "https://*.onrender.com",
     "https://*.vercel.app",
 ]
@@ -153,7 +153,10 @@ STATICFILES_STORAGE = (
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://job-tracker-zphd9hf3c-my-work-space1.vercel.app",
+]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

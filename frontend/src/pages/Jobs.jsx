@@ -19,6 +19,9 @@ import {
 function Jobs(){
    
     const [jobs, setJobs] = useState([]);
+    useEffect(() => {
+        document.title = "Jobs | Job Tracker";
+    }, []);
     const [searchTerm, setSearchTerm]= useState("");
     const [statusFilter, setSearchFilter] = useState("All");
     const [sortBy, setSortBy] = useState("Newest");

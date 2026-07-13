@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     FaUser,
     FaEnvelope,
@@ -17,6 +17,9 @@ function Register() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+      document.title = "Register | Job Tracker";
+  }, []);
 
   const navigate = useNavigate();
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import api from "../services/api";
 import "../styles/addjob.css";
 import { toast } from "react-toastify";
@@ -6,20 +6,23 @@ import { FaPlusCircle } from "react-icons/fa";
 
 
 function AddJob() {
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [formData, setFormData] = useState({
-    company_name: "",
-    job_title: "",
-    location: "",
-    job_url: "",
-    date_applied: "",
-    status: "",
-    notes: "",
-    resume_version: "",
-    interview_date: "",
-    interview_notes: ""
-  });
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        document.title = "Add Job | Job Tracker";
+    }, []);
+    const [errors, setErrors] = useState({});
+    const [formData, setFormData] = useState({
+        company_name: "",
+        job_title: "",
+        location: "",
+        job_url: "",
+        date_applied: "",
+        status: "",
+        notes: "",
+        resume_version: "",
+        interview_date: "",
+        interview_notes: ""
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;

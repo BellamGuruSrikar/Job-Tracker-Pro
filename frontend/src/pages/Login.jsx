@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/auth.css";
@@ -15,6 +15,9 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+      document.title = "Login | Job Tracker";
+  }, []);
 
   if (localStorage.getItem("access_token")) {
     return <Navigate to="/" />;
