@@ -4,12 +4,18 @@ from .models import JobApplication
 from .serializers import JobApplicationSerializer, RegisterSerializer
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import JsonResponse
 
 # Create your views here.
 class JobApplicationListCreateView(generics.ListCreateAPIView):
     serializer_class= JobApplicationSerializer
     permission_classes=[IsAuthenticated]
+
+    parser_classes = (
+        MultiPartParser,
+        FormParser,
+    )
 
     def get_queryset(self):
         return JobApplication.objects.filter(
