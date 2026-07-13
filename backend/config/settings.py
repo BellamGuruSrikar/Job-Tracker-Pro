@@ -155,6 +155,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://job-tracker-pro-kappa.vercel.app",
     "https://job-tracker-zphd9hf3c-my-work-space1.vercel.app",
 ]
 
