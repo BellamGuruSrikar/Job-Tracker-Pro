@@ -7,6 +7,10 @@ class JobApplicationSerializer(serializers.ModelSerializer):
         model = JobApplication
         fields = "__all__"
         read_only_fields = ["user"]
+    
+    def create(self, validated_data):
+        print("Validated Data:", validated_data)
+        return super().create(validated_data)
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
