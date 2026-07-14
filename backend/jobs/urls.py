@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     JobApplicationListCreateView, 
     JobApplicationDetailView,
-    RegisterView, test_resume
+    RegisterView, 
+    test_resume,
     )
 
 urlpatterns = [
