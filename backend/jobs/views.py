@@ -5,7 +5,9 @@ from .serializers import JobApplicationSerializer, RegisterSerializer
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, Http404
+import os
+from django.conf import settings
 
 # Create your views here.
 class JobApplicationListCreateView(generics.ListCreateAPIView):
@@ -46,3 +48,18 @@ def home(request):
 class RegisterView(generics.CreateAPIView):
     queryset= User.objects.all()
     serializer_class=RegisterSerializer
+
+def test_resume(request):
+    file_path = os.path.join(
+        settings.MEDIA_ROOT,
+        "resumes",
+        "Guru_Srikar_Resume_247ai_ChatProcess.pdf"
+    )
+
+    print("Checking:", file_path)
+    print("Exists:", os.path.exists(file_path))
+
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path, "rb"), content_type="application/pdf")
+
+    raise Http404("File not found")
