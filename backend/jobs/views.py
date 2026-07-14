@@ -65,11 +65,16 @@ def test_resume(request):
     raise Http404("File not found")
 
 def media_debug(request):
-    resumes_dir = os.path.join(settings.MEDIA_ROOT, "resumes")
+    jobs = []
+
+    for job in JobApplication.objects.all():
+        jobs.append({
+            "company": job.company_name,
+            "resume": job.resume_file.name,
+            "exists": os.path.exists(job.resume_file.path) if job.resume_file else False,
+        })
 
     return JsonResponse({
-        "media_root": str(settings.MEDIA_ROOT),
-        "media_exists": os.path.exists(settings.MEDIA_ROOT),
-        "resumes_exists": os.path.exists(resumes_dir),
-        "files": os.listdir(resumes_dir) if os.path.exists(resumes_dir) else []
+        "files": os.listdir(os.path.join(settings.MEDIA_ROOT, "resumes")),
+        "jobs": jobs,
     })
