@@ -63,3 +63,13 @@ def test_resume(request):
         return FileResponse(open(file_path, "rb"), content_type="application/pdf")
 
     raise Http404("File not found")
+
+def media_debug(request):
+    resumes_dir = os.path.join(settings.MEDIA_ROOT, "resumes")
+
+    return JsonResponse({
+        "media_root": str(settings.MEDIA_ROOT),
+        "media_exists": os.path.exists(settings.MEDIA_ROOT),
+        "resumes_exists": os.path.exists(resumes_dir),
+        "files": os.listdir(resumes_dir) if os.path.exists(resumes_dir) else []
+    })

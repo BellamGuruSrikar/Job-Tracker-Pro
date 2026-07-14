@@ -3,7 +3,7 @@ from .views import (
     JobApplicationListCreateView, 
     JobApplicationDetailView,
     RegisterView, 
-    test_resume,
+    test_resume,media_debug,
     )
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('jobs/<int:pk>/', JobApplicationDetailView.as_view()),
     path('register/',RegisterView.as_view()),
     path("test-resume/", test_resume),
+    path("media-debug/", media_debug),
 ]
