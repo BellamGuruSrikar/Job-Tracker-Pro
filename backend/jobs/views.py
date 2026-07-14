@@ -22,7 +22,10 @@ class JobApplicationListCreateView(generics.ListCreateAPIView):
             user=self.request.user
         )
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        obj = serializer.save(user=self.request.user)
+
+        print("Saved path:", obj.resume_file.path)
+        print("Exists:", obj.resume_file.storage.exists(obj.resume_file.name))
 
 class JobApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = JobApplicationSerializer
