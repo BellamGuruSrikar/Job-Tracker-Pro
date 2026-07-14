@@ -3,14 +3,17 @@ from .models import JobApplication
 from django.contrib.auth.models import User
 
 class JobApplicationSerializer(serializers.ModelSerializer):
+    resume_file = serializers.SerializerMethodField()
+
     class Meta:
         model = JobApplication
         fields = "__all__"
         read_only_fields = ["user"]
     
-    def create(self, validated_data):
-        print("Validated Data:", validated_data)
-        return super().create(validated_data)
+    def get_resume_file(self, obj):
+        if obj.resume_file:
+            return obj.resume_file.build_url()
+        return None
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
