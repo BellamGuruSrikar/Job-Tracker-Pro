@@ -48,33 +48,3 @@ def home(request):
 class RegisterView(generics.CreateAPIView):
     queryset= User.objects.all()
     serializer_class=RegisterSerializer
-
-def test_resume(request):
-    file_path = os.path.join(
-        settings.MEDIA_ROOT,
-        "resumes",
-        "Guru_Srikar_Resume_247ai_ChatProcess.pdf"
-    )
-
-    print("Checking:", file_path)
-    print("Exists:", os.path.exists(file_path))
-
-    if os.path.exists(file_path):
-        return FileResponse(open(file_path, "rb"), content_type="application/pdf")
-
-    raise Http404("File not found")
-
-def media_debug(request):
-    jobs = []
-
-    for job in JobApplication.objects.all():
-        jobs.append({
-            "company": job.company_name,
-            "resume": job.resume_file.name,
-            "exists": os.path.exists(job.resume_file.path) if job.resume_file else False,
-        })
-
-    return JsonResponse({
-        "files": os.listdir(os.path.join(settings.MEDIA_ROOT, "resumes")),
-        "jobs": jobs,
-    })

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class JobApplication(models.Model):
@@ -16,10 +17,11 @@ class JobApplication(models.Model):
         max_length=100,
         blank=True
     )
-    resume_file = models.FileField(
-        upload_to="resumes/",
+    resume_file = CloudinaryField(
+        "resume",
+        resource_type="raw",
         blank=True,
-        null=True
+        null=True,
     )
     interview_date = models.DateField(null=True, blank=True)
     interview_notes = models.TextField(blank=True)
