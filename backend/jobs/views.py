@@ -26,6 +26,12 @@ class JobApplicationListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         obj = serializer.save(user=self.request.user)
 
+print(obj.resume_file)
+print(type(obj.resume_file))
+print(obj.resume_file.public_id)
+print("PUBLIC ID:", obj.resume_file.public_id)
+print("URL:", obj.resume_file.build_url())
+
 class JobApplicationDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = JobApplicationSerializer
     permission_classes=[IsAuthenticated]

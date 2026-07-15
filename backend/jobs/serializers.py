@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import JobApplication
 from django.contrib.auth.models import User
-import cloudinary.utils
+
 
 
 class JobApplicationSerializer(serializers.ModelSerializer):
@@ -18,7 +18,9 @@ class JobApplicationSerializer(serializers.ModelSerializer):
             url, _ = cloudinary.utils.cloudinary_url(
                 instance.resume_file.public_id,
                 resource_type="raw",
+                type="upload",
                 secure=True,
+                format="pdf",
             )
             data["resume_file"] = url
 
