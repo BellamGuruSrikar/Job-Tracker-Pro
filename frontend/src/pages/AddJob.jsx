@@ -109,11 +109,11 @@ function AddJob() {
         const data = new FormData();
 
         Object.keys(formData).forEach((key) => {
-        data.append(key, formData[key]);
+            data.append(key, formData[key]);
         });
 
         if (resumeFile) {
-        data.append("resume_file", resumeFile);
+            data.append("upload_resume", resumeFile);
         }
 
         try {
@@ -144,12 +144,14 @@ function AddJob() {
             }
 
         } catch (error) {
+            console.log(error.response);
+            console.log(error.response?.data);
             setLoading(false);
             if (error.response?.status === 401) {
                 toast.error("Session expired. Please login again.");
             }
             else if (error.response?.status === 400) {
-                toast.warning("Please fill all required fields.");
+                toast.error(JSON.stringify(error.response?.data));
             }
             else {
                 toast.error("Something went wrong.");

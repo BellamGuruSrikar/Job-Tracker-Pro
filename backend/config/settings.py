@@ -13,9 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import dj_database_url
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,7 +51,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "jobs",
-    "cloudinary",
 ]
 
 MIDDLEWARE = [
@@ -163,12 +160,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://job-tracker-zphd9hf3c-my-work-space1.vercel.app",
 ]
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
-cloudinary.config(
-    cloud_name=config("CLOUDINARY_CLOUD_NAME"),
-    api_key=config("CLOUDINARY_API_KEY"),
-    api_secret=config("CLOUDINARY_API_SECRET"),
-    secure=True,
-)
+SUPABASE_URL = config("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = config("SUPABASE_SERVICE_KEY")
+SUPABASE_BUCKET = config("SUPABASE_BUCKET")

@@ -166,7 +166,7 @@ function EditJob() {
 
         // Only send a new file if the user selected one
         if (resumeFile) {
-            data.append("resume_file", resumeFile);
+            data.append("upload_resume", resumeFile);
         }
 
         try {
