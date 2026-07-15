@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -10,9 +9,7 @@ from .serializers import JobApplicationSerializer, RegisterSerializer
 from .supabase_storage import upload_resume,delete_resume
 
 from django.contrib.auth.models import User
-from django.http import JsonResponse, FileResponse, Http404
-import os
-from django.conf import settings
+from django.http import JsonResponse
 
 
 # Create your views here.

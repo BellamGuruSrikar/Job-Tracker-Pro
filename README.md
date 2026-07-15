@@ -33,12 +33,22 @@ The application allows users to securely manage job applications, upload resumes
 - Secure Login
 - JWT Authentication
 - Protected Routes
+- Token Refresh Support
 
 ### 💼 Job Management
 - Add Job Applications
 - Edit Job Details
 - Delete Applications
 - View Complete Job History
+- Update Application Stat
+
+### 📄 Resume Management
+- Upload Resume (PDF)
+- Replace Existing Resume
+- View Resume Online
+- Automatic Resume Deletion when Updated
+- Automatic Resume Deletion when Job is Removed
+- Secure Cloud Storage using Supabase
 
 ### 📊 Dashboard
 - Total Applications
@@ -47,16 +57,12 @@ The application allows users to securely manage job applications, upload resumes
 - Upcoming Interviews
 - Rejected Jobs
 - Offers Received
+- Recent Applications
 
 ### 🔍 Search & Filter
-- Search by Company
+- Search by Company Name
 - Search by Job Title
-- Filter by Status
-
-### 📄 Resume Management
-- Upload Resume
-- Preview Resume
-- Download Resume
+- Filter Applications by Status
 
 ### 📈 Analytics
 - Application Statistics
@@ -70,13 +76,30 @@ The application allows users to securely manage job applications, upload resumes
 - Toast Notifications
 - Custom Favicon
 - Dynamic Browser Titles
+- Clean Modern UI
 
+---
+
+# 🏗️ System Architecture
+
+```text
+                React Frontend (Vercel)
+                        │
+                        │ REST API
+                        ▼
+      Django REST Framework Backend (Render)
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+          ▼                           ▼
+   PostgreSQL Database         Supabase Storage
+      (Job Details)            (Resume PDFs)
+```
 ---
 
 # 🛠 Tech Stack
 
 ## Frontend
-
 - React.js
 - React Router DOM
 - Axios
@@ -85,23 +108,28 @@ The application allows users to securely manage job applications, upload resumes
 - CSS3
 
 ## Backend
-
+- Python
 - Django
 - Django REST Framework
 - Simple JWT Authentication
 
 ## Database
-
 - PostgreSQL
 
-## Deployment
+## Cloud Storage
+- Supabase Storage
 
+## Deployment
 - Vercel (Frontend)
 - Render (Backend)
 
+## Version Control
+- Git
+- GitHub
+
 ---
 
-# 📂 Folder Structure
+# 📂 Project Structure
 
 ```
 Job-Tracker-Pro
@@ -109,10 +137,11 @@ Job-Tracker-Pro
 ├── frontend
 │   ├── public
 │   ├── src
-│   ├── components
-│   ├── pages
-│   ├── services
-│   ├── styles
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── services
+│   │   ├── styles
+│   │   └── assets
 │   └── package.json
 │
 ├── backend
@@ -133,6 +162,8 @@ Job-Tracker-Pro
 
 ```bash
 git clone https://github.com/BellamGuruSrikar/Job-Tracker-Pro.git
+
+cd Job-Tracker-Pro
 ```
 
 ---
@@ -144,13 +175,23 @@ cd backend
 
 python -m venv venv
 
+# Windows
 venv\Scripts\activate
+
+# Linux / Mac
+source venv/bin/activate
 
 pip install -r requirements.txt
 
 python manage.py migrate
 
 python manage.py runserver
+```
+
+Backend will run on:
+
+```
+http://127.0.0.1:8000/
 ```
 
 ---
@@ -163,6 +204,12 @@ cd frontend
 npm install
 
 npm run dev
+```
+
+Frontend will run on:
+
+```
+http://localhost:5173/
 ```
 
 ---
@@ -179,6 +226,12 @@ DEBUG=True
 DATABASE_URL=your_database_url
 
 ALLOWED_HOSTS=127.0.0.1,localhost
+
+SUPABASE_URL=https://uwezxokmldmxogbtsceb.supabase.co
+
+SUPABASE_SERVICE_KEY=your_service_role_key (use you own Key)
+
+SUPABASE_BUCKET=resumes
 ```
 
 ---
@@ -200,6 +253,7 @@ VITE_API_URL=http://127.0.0.1:8000/api
 | POST | `/api/token/refresh/` | Refresh Token |
 | GET | `/api/jobs/` | Get Jobs |
 | POST | `/api/jobs/` | Create Job |
+| GET | `/api/jobs/{id}/` | Get Single Job |
 | PUT | `/api/jobs/{id}/` | Update Job |
 | DELETE | `/api/jobs/{id}/` | Delete Job |
 
@@ -207,7 +261,33 @@ VITE_API_URL=http://127.0.0.1:8000/api
 
 # 📸 Screenshots
 
-> Screenshots will be added after the final deployment.
+## Login Page
+![Login](screenshots/login.png)
+
+---
+
+## Register
+![Register](screenshots/register.png)
+
+---
+
+## Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+---
+
+## Add Job
+![Add Job](screenshots/add-job.png)
+
+---
+
+## Edit Job
+![Edit Job](screenshots/edit-job.png)
+
+---
+
+## Job List
+![Job List](screenshots/job-list.png)
 
 ---
 
@@ -217,15 +297,33 @@ Demo video will be added soon.
 
 ---
 
+# 🚀 Production Features
+
+- JWT Authentication
+- Protected REST APIs
+- PostgreSQL Database
+- Secure Resume Storage
+- Resume Replacement
+- Automatic Resume Cleanup
+- Responsive UI
+- Production Deployment
+- Environment Variable Configuration
+- CORS Enabled
+
+---
+
 # 🚀 Future Improvements
 
 - Email Notifications
 - Calendar Integration
+- Interview Reminders
+- Resume Version History
 - AI Resume Analyzer
 - Interview Reminders
 - Dark Mode
 - Company Insights
 - Job Recommendation System
+- Export Jobs to Excel/PDF
 
 ---
 
@@ -233,18 +331,28 @@ Demo video will be added soon.
 
 **Bellam Guru Srikar**
 
-GitHub
+🎓 B.Tech – Computer Science Engineering (AI & DS)
 
+📧 Email: srikarsri2004@gmail.com
+
+💻 GitHub:
 https://github.com/BellamGuruSrikar
 
-LinkedIn
-
-(Add your LinkedIn Profile URL)
+💼 LinkedIn:
+https://www.linkedin.com/in/bellam-guru-srikar-701a82248/
 
 ---
 
-# ⭐ Support
+# ⭐ If you like this project...
 
-If you found this project helpful, please consider giving it a ⭐ on GitHub.
+If you found this project useful or interesting,
+
+please consider giving it a ⭐ on GitHub.
 
 It motivates me to build more open-source projects.
+
+---
+
+<p align="center">
+Made with ❤️ using React, Django REST Framework & PostgreSQL
+</p>
