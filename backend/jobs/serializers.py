@@ -9,10 +9,22 @@ class JobApplicationSerializer(serializers.ModelSerializer):
         model = JobApplication
         fields = "__all__"
         read_only_fields = ["user"]
-    
+
     def get_resume_file(self, obj):
+        print(type(obj.resume_file))
+        print(obj.resume_file)
+
         if obj.resume_file:
-            return obj.resume_file.build_url()
+            try:
+                print(obj.resume_file.url)
+            except Exception as e:
+                print("URL ERROR:", e)
+
+            try:
+                print(obj.resume_file.build_url())
+            except Exception as e:
+                print("BUILD ERROR:", e)
+
         return None
 
 class RegisterSerializer(serializers.ModelSerializer):
