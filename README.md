@@ -291,9 +291,7 @@ VITE_API_URL=http://127.0.0.1:8000/api
 
 ---
 
-# 🎥 Demo Video
-
-Demo video will be added soon.
+# 🎥 Demo Video: https://www.linkedin.com/posts/bellam-guru-srikar-701a82248_opentowork-softwareengineer-fullstackdeveloper-ugcPost-7483349807818919936-XTiQ/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD1iEXEBNFq61TJveuIoPqWzbzaKgM3yJIQ
 
 ---
 
